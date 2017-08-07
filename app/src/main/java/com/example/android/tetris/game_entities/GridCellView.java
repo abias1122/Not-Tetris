@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.example.android.tetris.R;
+
 /**
  * A representation of a grid cell in the Tetris grid.
  */
@@ -14,13 +16,13 @@ public class GridCellView extends ImageView {
     private boolean isOccupied; //whether or not cell occupied by tetonimo
     private int xPos;
     private int yPos;
-    private int cellImage;
     private OnTouchListener touchListener;
 
     public GridCellView(Context context, int xPos, int yPos) {
         super(context);
         this.xPos = xPos;
         this.yPos = yPos;
+        setImageResource(R.drawable.empty_grid_cell);
         isOccupied = false;
     }
 
@@ -49,9 +51,5 @@ public class GridCellView extends ImageView {
 
     public int getYPos() {
         return yPos;
-    }
-
-    public void setCellImage(int imageResId) {
-        cellImage = imageResId;
     }
 }
