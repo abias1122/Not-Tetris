@@ -7,8 +7,7 @@ import android.widget.GridLayout;
  */
 
 public abstract class Tetronimo {
-    private int mComponentViewIndices[][];
-    private GridLayout.LayoutParams layoutParams[];
+    private int mComponentViews[];
 
     private int mBottommostRowOccupied;
     private int mRightmostColOccupied;
