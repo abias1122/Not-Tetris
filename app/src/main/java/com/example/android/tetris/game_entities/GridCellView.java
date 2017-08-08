@@ -41,6 +41,11 @@ public class GridCellView extends ImageView {
         isOccupied = false;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
+    }
+
     public void setOccupied(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
