@@ -3,14 +3,11 @@ package com.example.android.tetris.game_entities;
 import com.example.android.tetris.R;
 
 /**
- * Tetronimo shaped like a square:
- *
- * + +
- * + +
+ * Represents a straight tetronimo:
+ *       + + + +
  */
 
-public class SquareTetronimo extends Tetronimo {
-
+public class StraightTetronimo extends Tetronimo {
     private GridCellView mComponentViews[];
     private GridCellView mAllGridCellViews[];
 
@@ -21,34 +18,34 @@ public class SquareTetronimo extends Tetronimo {
     private int mRightmostColOccupied;
     private int mLeftmostColOccupied;
 
-    public SquareTetronimo(GridCellView[] gameboard) {
+    public StraightTetronimo(GridCellView[] gameboard) {
         mAllGridCellViews = gameboard;
 
         //component views in top center of gameboard
         mComponentViews = new GridCellView[4];
-        mComponentViews[0] = mAllGridCellViews[NUM_COLS + 4];
-        mComponentViews[1] = mAllGridCellViews[NUM_COLS + 5];
-        mComponentViews[2] = mAllGridCellViews[2*NUM_COLS + 4];
-        mComponentViews[3] = mAllGridCellViews[2*NUM_COLS + 5];
+        mComponentViews[0] = mAllGridCellViews[NUM_COLS + 3];
+        mComponentViews[1] = mAllGridCellViews[NUM_COLS + 4];
+        mComponentViews[2] = mAllGridCellViews[NUM_COLS + 5];
+        mComponentViews[3] = mAllGridCellViews[NUM_COLS + 6];
 
-        mComponentViews[0].setImageResource(R.drawable.square_tetron_grid_cell);
-        mComponentViews[1].setImageResource(R.drawable.square_tetron_grid_cell);
-        mComponentViews[2].setImageResource(R.drawable.square_tetron_grid_cell);
-        mComponentViews[3].setImageResource(R.drawable.square_tetron_grid_cell);
+        mComponentViews[0].setImageResource(R.drawable.straight_tetron_grid_cell);
+        mComponentViews[1].setImageResource(R.drawable.straight_tetron_grid_cell);
+        mComponentViews[2].setImageResource(R.drawable.straight_tetron_grid_cell);
+        mComponentViews[3].setImageResource(R.drawable.straight_tetron_grid_cell);
 
         mComponentViews[0].setOccupied(true);
         mComponentViews[1].setOccupied(true);;
         mComponentViews[2].setOccupied(true);;
         mComponentViews[3].setOccupied(true);;
 
-        mBottommostRowOccupied = 2;
-        mLeftmostColOccupied = 4;
-        mRightmostColOccupied = 5;
+        mBottommostRowOccupied = 1;
+        mLeftmostColOccupied = 3;
+        mRightmostColOccupied = 6;
     }
 
     @Override
     public void rotate() {
-        //rotating a square 90 degrees doesn't change appearance
+        //TODO: implement rotate()
         return;
     }
 
