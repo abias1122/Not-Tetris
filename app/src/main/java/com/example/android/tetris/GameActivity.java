@@ -8,6 +8,7 @@ import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.LTetronimo;
+import com.example.android.tetris.game_entities.ReverseLTetronimo;
 import com.example.android.tetris.game_entities.SquareTetronimo;
 import com.example.android.tetris.game_entities.StraightTetronimo;
 import com.example.android.tetris.game_entities.Tetronimo;
@@ -63,6 +64,6 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        LTetronimo straightTetronimo = new LTetronimo(mGridCellsViews);
+        ReverseLTetronimo straightTetronimo = new ReverseLTetronimo(mGridCellsViews);
     }
 }
