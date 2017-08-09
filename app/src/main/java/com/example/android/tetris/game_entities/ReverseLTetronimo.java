@@ -25,10 +25,10 @@ public class ReverseLTetronimo extends Tetronimo {
 
         //component views in top center of gameboard
         mComponentViews = new GridCellView[4];
-        mComponentViews[0] = mAllGridCellViews[2*NUM_COLS + 3];
-        mComponentViews[1] = mAllGridCellViews[2*NUM_COLS + 4];
-        mComponentViews[2] = mAllGridCellViews[2*NUM_COLS + 5];
-        mComponentViews[3] = mAllGridCellViews[NUM_COLS + 3];
+        mComponentViews[0] = mAllGridCellViews[NUM_COLS + 3];
+        mComponentViews[1] = mAllGridCellViews[NUM_COLS + 4];
+        mComponentViews[2] = mAllGridCellViews[NUM_COLS + 5];
+        mComponentViews[3] = mAllGridCellViews[0*NUM_COLS + 3];
 
         mComponentViews[0].setImageResource(R.drawable.reverse_l_tetron_grid_cell);
         mComponentViews[1].setImageResource(R.drawable.reverse_l_tetron_grid_cell);
@@ -40,7 +40,7 @@ public class ReverseLTetronimo extends Tetronimo {
         mComponentViews[2].setOccupied(true);;
         mComponentViews[3].setOccupied(true);;
 
-        mBottommostRowOccupied = 2;
+        mBottommostRowOccupied = 1;
         mLeftmostColOccupied = 3;
         mRightmostColOccupied = 5;
     }
