@@ -7,24 +7,11 @@ import android.widget.GridLayout;
  */
 
 public abstract class Tetronimo {
-    private int mComponentViews[];
-
-    private int mBottommostRowOccupied;
-    private int mRightmostColOccupied;
-    private int mLeftmostColOccupied;
-
-
     public abstract void rotate();
 
-    public int getBottommostRowOccupied() {
-        return mBottommostRowOccupied;
-    }
+    public abstract int getBottommostRowOccupied();
 
-    public int getLeftmostColOccupied() {
-        return mLeftmostColOccupied;
-    }
+    public  abstract int getLeftmostColOccupied();
 
-    public int getRightmostColOccupied() {
-        return mRightmostColOccupied;
-    }
+    public abstract int getRightmostColOccupied();
 }
