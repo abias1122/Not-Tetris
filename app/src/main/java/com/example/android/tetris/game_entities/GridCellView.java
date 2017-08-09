@@ -16,7 +16,6 @@ public class GridCellView extends ImageView {
     private boolean isOccupied; //whether or not cell occupied by tetonimo
     private int xPos;
     private int yPos;
-    private OnTouchListener touchListener;
 
     public GridCellView(Context context, int xPos, int yPos) {
         super(context);
