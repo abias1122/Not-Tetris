@@ -22,7 +22,7 @@ public class GridCellView extends ImageView {
         super(context);
         this.xPos = xPos;
         this.yPos = yPos;
-        setImageResource(R.drawable.empty_grid_cell);
+        //setImageResource(R.drawable.empty_grid_cell);
         isOccupied = false;
     }
 
