@@ -12,7 +12,7 @@ import com.example.android.tetris.R;
 public class SquareTetronimo extends Tetronimo {
 
     private GridCellView mComponentViews[];
-    private GridCellView mGameboard[];
+    private GridCellView mAllGridCellViews[];
 
     private final int NUM_COLS = 10;
     private final int NUM_ROWS = 24;
@@ -22,14 +22,14 @@ public class SquareTetronimo extends Tetronimo {
     private int mLeftmostColOccupied;
 
     public SquareTetronimo(GridCellView[] gameboard) {
-        mGameboard = gameboard;
+        mAllGridCellViews = gameboard;
 
         //component views in top center of gameboard
         mComponentViews = new GridCellView[4];
-        mComponentViews[0] = mGameboard[4*NUM_ROWS + 1];
-        mComponentViews[1] = mGameboard[5*NUM_ROWS + 1];
-        mComponentViews[2] = mGameboard[4*NUM_ROWS + 2];
-        mComponentViews[3] = mGameboard[5*NUM_ROWS + 2];
+        mComponentViews[0] = mAllGridCellViews[NUM_COLS + 4];
+        mComponentViews[1] = mAllGridCellViews[NUM_COLS + 5];
+        mComponentViews[2] = mAllGridCellViews[2*NUM_COLS + 4];
+        mComponentViews[3] = mAllGridCellViews[2*NUM_COLS + 5];
 
         mComponentViews[0].setImageResource(R.drawable.square_tetron_grid_cell);
         mComponentViews[1].setImageResource(R.drawable.square_tetron_grid_cell);

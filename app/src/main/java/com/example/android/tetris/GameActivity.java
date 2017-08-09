@@ -7,6 +7,7 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
+import com.example.android.tetris.game_entities.SquareTetronimo;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -58,5 +59,7 @@ public class GameActivity extends AppCompatActivity {
                 mGameboard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
+        //SquareTetronimo squareTetronimo = new SquareTetronimo(mGridCellsViews);
     }
 }
