@@ -1,5 +1,7 @@
 package com.example.android.tetris.game_entities;
 
+import android.util.Log;
+
 import com.example.android.tetris.R;
 
 /**
@@ -11,6 +13,8 @@ import com.example.android.tetris.R;
 public class ZTetronimo extends Tetronimo {
     private GridCellView mComponentViews[];
     private GridCellView mAllGridCellViews[];
+
+    private final String TAG = "ZTetronimo";
 
     private final int NUM_COLS = 10;
     private final int NUM_ROWS = 24;
@@ -28,6 +32,11 @@ public class ZTetronimo extends Tetronimo {
         mComponentViews[1] = mAllGridCellViews[NUM_COLS + 4];
         mComponentViews[2] = mAllGridCellViews[0*NUM_COLS + 4];
         mComponentViews[3] = mAllGridCellViews[NUM_COLS + 5];
+
+        Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[0].getXPos(), mComponentViews[0].getYPos()));
+        Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[1].getXPos(), mComponentViews[1].getYPos()));
+        Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[2].getXPos(), mComponentViews[2].getYPos()));
+        Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[3].getXPos(), mComponentViews[3].getYPos()));
 
         mComponentViews[0].setImageResource(R.drawable.z_tetron_grid_cell);
         mComponentViews[1].setImageResource(R.drawable.z_tetron_grid_cell);

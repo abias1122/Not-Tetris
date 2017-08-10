@@ -9,6 +9,8 @@ import android.widget.GridLayout;
 public abstract class Tetronimo {
     public abstract void rotate();
 
+    //public abstract void moveDown();
+
     public abstract int getBottommostRowOccupied();
 
     public  abstract int getLeftmostColOccupied();

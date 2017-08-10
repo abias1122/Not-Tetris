@@ -35,10 +35,10 @@ public class GameActivity extends AppCompatActivity {
         mGameboard.setRowCount(NUM_ROWS);
         mGridCellsViews = new GridCellView[NUM_COLS * NUM_ROWS];
 
-        for(int x = 0; x < NUM_COLS; x++) {
-            for(int y = 0; y < NUM_ROWS; y++) {
+        for(int y = 0; y < NUM_ROWS; y++) {
+            for(int x = 0; x < NUM_COLS; x++) {
                 GridCellView newGridCell = new GridCellView(this, x, y);
-                mGridCellsViews[(x * NUM_ROWS) + y] = newGridCell;
+                mGridCellsViews[(y*NUM_COLS) + x] = newGridCell;
                 mGameboard.addView(newGridCell);
             }
         }
