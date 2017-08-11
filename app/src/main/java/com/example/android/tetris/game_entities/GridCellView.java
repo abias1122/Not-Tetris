@@ -49,6 +49,10 @@ public class GridCellView extends ImageView {
         this.isOccupied = isOccupied;
     }
 
+    public boolean getOccupied() {
+        return isOccupied;
+    }
+
     public int getXPos() {
         return xPos;
     }
