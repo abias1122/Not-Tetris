@@ -1,5 +1,7 @@
 package com.example.android.tetris;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private final String TAG = "GameActivity";
     private GridLayout mGameboard;
     private GridCellView[] mGridCellsViews;
+    private Handler mMoveDownHandler;
 
     private final int NUM_COLS = 10;
     private final int NUM_ROWS = 24;
@@ -67,6 +70,14 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        ZTetronimo straightTetronimo = new ZTetronimo(mGridCellsViews);
+        final TTetronimo straightTetronimo = new TTetronimo(mGridCellsViews);
+        mMoveDownHandler = new Handler();
+        mMoveDownHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                straightTetronimo.moveDown();
+                mMoveDownHandler.postDelayed(this, 1000);
+            }
+        }, 1000);
     }
 }

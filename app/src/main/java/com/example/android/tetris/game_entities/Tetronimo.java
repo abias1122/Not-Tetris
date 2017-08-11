@@ -1,5 +1,6 @@
 package com.example.android.tetris.game_entities;
 
+import android.util.Log;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.R;
@@ -13,6 +14,7 @@ public abstract class Tetronimo {
     private final int NUM_COLS = 10;
     private final int NUM_ROWS = 24;
     private final int DRAWABLE_ID;
+    private final String TAG = "Tetronimo";
 
     private GridCellView[] mComponentCells;
     private GridCellView[] mGameGridCells;
@@ -50,7 +52,7 @@ public abstract class Tetronimo {
         //TODO: Implement moveDown()
         int yPos;
         int xPos;
-
+        sortComponentGridCellsByYPos();
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getYPos() == NUM_ROWS - 1) {
@@ -61,6 +63,8 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
+//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
+//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
 
             //Need to add 1 to yPos to check one cell lower than the currently occupied
             //component cell, and y numbers increase from top to bottom for GridLayouts
@@ -73,7 +77,7 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-
+                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
                     //TODO: Implement place()
                     return;
@@ -81,12 +85,32 @@ public abstract class Tetronimo {
             }
         }
 
-        for(GridCellView gridCell: mComponentCells) {
-            xPos = gridCell.getXPos();
-            yPos = gridCell.getYPos();
-            gridCell.setImageResource(android.R.color.transparent);
-            gridCell = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
-            gridCell.setImageResource(DRAWABLE_ID);
+        for(int i = 0; i < mComponentCells.length; i++) {
+            xPos = mComponentCells[i].getXPos();
+            yPos = mComponentCells[i].getYPos();
+            mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i] = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
+            mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
+
+        Log.i(TAG, "break");
+    }
+
+    private void sortComponentGridCellsByYPos() {
+        boolean swapped;
+        do {
+            swapped = false;
+            //
+            // Log.i(TAG, "swapped: false");
+            for(int i = 0; i < mComponentCells.length - 1; i++) {
+                if(mComponentCells[i].getYPos() < mComponentCells[i + 1].getYPos()) {
+                    GridCellView temp = mComponentCells[i];
+                    mComponentCells[i] = mComponentCells[i + 1];
+                    mComponentCells[i + 1] = temp;
+                    swapped = true;
+                    //Log.i(TAG, "swapped: true");
+                }
+            }
+        } while (swapped);
     }
 }
