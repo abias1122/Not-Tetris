@@ -38,15 +38,10 @@ public class ZTetronimo extends Tetronimo {
         Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[2].getXPos(), mComponentViews[2].getYPos()));
         Log.i(TAG, String.format("x:%d, y:%d", mComponentViews[3].getXPos(), mComponentViews[3].getYPos()));
 
-        mComponentViews[0].setImageResource(R.drawable.z_tetron_grid_cell);
-        mComponentViews[1].setImageResource(R.drawable.z_tetron_grid_cell);
-        mComponentViews[2].setImageResource(R.drawable.z_tetron_grid_cell);
-        mComponentViews[3].setImageResource(R.drawable.z_tetron_grid_cell);
-
-        mComponentViews[0].setOccupied(true);
-        mComponentViews[1].setOccupied(true);;
-        mComponentViews[2].setOccupied(true);;
-        mComponentViews[3].setOccupied(true);;
+        for(GridCellView gridCell : mComponentViews) {
+            gridCell.setOccupied(true);
+            gridCell.setImageResource(R.drawable.z_tetron_grid_cell);
+        }
 
         mBottommostRowOccupied = 1;
         mLeftmostColOccupied = 3;

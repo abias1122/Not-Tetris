@@ -31,15 +31,10 @@ public class LTetronimo extends Tetronimo {
         mComponentViews[2] = mAllGridCellViews[NUM_COLS + 5];
         mComponentViews[3] = mAllGridCellViews[0*NUM_COLS + 5];
 
-        mComponentViews[0].setImageResource(R.drawable.l_tetron_grid_cell);
-        mComponentViews[1].setImageResource(R.drawable.l_tetron_grid_cell);
-        mComponentViews[2].setImageResource(R.drawable.l_tetron_grid_cell);
-        mComponentViews[3].setImageResource(R.drawable.l_tetron_grid_cell);
-
-        mComponentViews[0].setOccupied(true);
-        mComponentViews[1].setOccupied(true);;
-        mComponentViews[2].setOccupied(true);;
-        mComponentViews[3].setOccupied(true);;
+        for(GridCellView gridCell : mComponentViews) {
+            gridCell.setOccupied(true);
+            gridCell.setImageResource(R.drawable.l_tetron_grid_cell);
+        }
 
         mBottommostRowOccupied = 1;
         mLeftmostColOccupied = 3;
