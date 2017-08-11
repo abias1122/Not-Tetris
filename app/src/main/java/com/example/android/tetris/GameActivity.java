@@ -50,8 +50,8 @@ public class GameActivity extends AppCompatActivity {
                 int parentHeight = mGameboard.getHeight();
                 int width = parentWidth / NUM_COLS;
                 int height = parentHeight / NUM_ROWS;
-                Log.i(TAG, "cell width: " + parentWidth);
-                Log.i(TAG, "cell height:" + parentHeight);
+                Log.i(TAG, "cell width: " + width);
+                Log.i(TAG, "cell height:" + height);
 
                 for(int x = 0; x < NUM_COLS; x++) {
                     for(int y = 0; y < NUM_ROWS; y++) {

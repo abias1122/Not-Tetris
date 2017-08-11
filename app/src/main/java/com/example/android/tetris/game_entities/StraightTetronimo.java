@@ -8,54 +8,16 @@ import com.example.android.tetris.R;
  */
 
 public class StraightTetronimo extends Tetronimo {
-    private GridCellView mComponentViews[];
-    private GridCellView mAllGridCellViews[];
 
-    private final int NUM_COLS = 10;
-    private final int NUM_ROWS = 24;
-
-    private int mBottommostRowOccupied;
-    private int mRightmostColOccupied;
-    private int mLeftmostColOccupied;
-
-    public StraightTetronimo(GridCellView[] gameboard) {
-        mAllGridCellViews = gameboard;
-
-        //component views in top center of gameboard
-        mComponentViews = new GridCellView[4];
-        mComponentViews[0] = mAllGridCellViews[NUM_COLS + 3];
-        mComponentViews[1] = mAllGridCellViews[NUM_COLS + 4];
-        mComponentViews[2] = mAllGridCellViews[NUM_COLS + 5];
-        mComponentViews[3] = mAllGridCellViews[NUM_COLS + 6];
-
-        for(GridCellView gridCell : mComponentViews) {
-            gridCell.setOccupied(true);
-            gridCell.setImageResource(R.drawable.straight_tetron_grid_cell);
-        }
-
-        mBottommostRowOccupied = 1;
-        mLeftmostColOccupied = 3;
-        mRightmostColOccupied = 6;
+    public StraightTetronimo(GridCellView[] gameGridCells) {
+        super(gameGridCells,
+                new int[][] {{3, 1}, {4, 1}, {5, 1}, {6, 1}},
+                R.drawable.straight_tetron_grid_cell);
     }
 
     @Override
     public void rotate() {
         //TODO: implement rotate()
         return;
-    }
-
-    @Override
-    public int getBottommostRowOccupied() {
-        return mBottommostRowOccupied;
-    }
-
-    @Override
-    public int getLeftmostColOccupied() {
-        return mLeftmostColOccupied;
-    }
-
-    @Override
-    public int getRightmostColOccupied() {
-        return mRightmostColOccupied;
     }
 }
