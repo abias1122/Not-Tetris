@@ -49,7 +49,7 @@ public abstract class Tetronimo {
     public abstract void rotate();
 
     public void moveDown() {
-        //TODO: Implement moveDown()
+
         int yPos;
         int xPos;
         sortComponentGridCellsByYPos();

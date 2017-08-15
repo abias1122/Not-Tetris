@@ -1,0 +1,195 @@
+[33mcommit 290ee0a6563a1b47a6e7c4d5c22dd825733d140b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;32mtetrons[m[33m)[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Fri Aug 11 18:57:24 2017 -0400
+
+    Add handler for and fix defects in moveDown()
+    
+    The handler allows the movement of the tetronimo to display on screeen.
+    I had to fix a defect in the sort used in moveDown() to prevent tetronimos
+    from displaying incorrectly.
+
+[33mcommit aefb9d9ae56af493808c73cc776416526241ac0a[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Fri Aug 11 16:57:14 2017 -0400
+
+    Implement moveDown function in Tetronimo
+    
+    Still need to make a handler in GameActivity if this method is to
+    update the UI. Will likely also heavily refactor this method, as
+    it's a bit of a mess.
+
+[33mcommit 9ad2d2a2aaebe4de1a18ad581b4f85463a56e3c2[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Fri Aug 11 15:08:07 2017 -0400
+
+    Move logic from Tetronimo subclasses to superclass
+    
+    In the previous commmits, essentially the same code
+    was used in all of the Tetronimo subclasses with few variations.
+    This lead both to uneccessary code and defeated the point of
+    extending from an abstract class in the first place. This
+    change should make the code less messy and easier to maintain.
+
+[33mcommit 04f86ca9b53aec40a08d559b46df0e540637290e[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Thu Aug 10 20:08:56 2017 -0400
+
+    Refactor tetronimo subclasses
+
+[33mcommit cc3853ee035559de0f0b03a53fc9ee3fed22d9ce[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Thu Aug 10 09:49:53 2017 -0400
+
+    Alter GameActivity GridCellView array generation to be easily acccessed by tetronimoes
+    
+    Should make implementing the moveDown method much easier. Will need
+    to alter how Tetronimo abstract class and its sub classes are structured
+    to avoid mental clutter.
+
+[33mcommit aa52b14a5834f89ed1a47b4674757eea14628563[m[33m ([m[1;32mgameboard[m[33m)[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:47:00 2017 -0400
+
+    Add Z tetronimo
+
+[33mcommit b71ca29d21f6097d4016ecc9263dc118ad677e3b[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:40:55 2017 -0400
+
+    Add S tetronimo
+
+[33mcommit 4652fc57649edfd747bd561b08b0fecaa2898b0f[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:37:58 2017 -0400
+
+    Add T-tetronimo
+
+[33mcommit 9e0cd55f2042c12b6eca13ff8eda1aeb733b9f53[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:31:12 2017 -0400
+
+    Add reverse-L tetronimo
+
+[33mcommit d49ed04da650fa69200262e3e016a448b6c2e6a8[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:26:22 2017 -0400
+
+    Add L tetronimo
+
+[33mcommit 7db6c7670db7b6fff11e6be69196e47968408f4c[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 17:20:09 2017 -0400
+
+    Add straight tetronimo
+    
+    Already displaying on screen properly.
+
+[33mcommit 292978799cdfcbed27f67589dd571e94aa066234[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 15:53:41 2017 -0400
+
+    Make square tetronimo properly display on screen
+
+[33mcommit 3725c0f38e7e5b68d7d9831a4b495580069f942e[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 15:40:44 2017 -0400
+
+    Add square tetronimo to game
+
+[33mcommit 5d5ad99bf76f6e73a0c0a19647c8b119b35ac916[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 10:48:12 2017 -0400
+
+    Add background drawables for tetronimoes
+
+[33mcommit bd46885e4fadec76ed127b52528e14b173c13837[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 10:30:57 2017 -0400
+
+    Remove onTouchListener from GridCellView
+
+[33mcommit ac24a9e893ab7edfc6c706c18d08e3c26c396a9c[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Wed Aug 9 10:20:57 2017 -0400
+
+    Change gameboard background from grid to solid color
+    
+    It should be easy enough to see grid lines once blocks fall in place.
+
+[33mcommit 576e59119996658f8fa98925b1606fd2d3435d9c[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Tue Aug 8 11:17:25 2017 -0400
+
+    Fit gameboard to fully display on screen
+
+[33mcommit b0985cb184f4ddc32c5951fdde0be851ff73fec9[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Mon Aug 7 17:27:36 2017 -0400
+
+    Generate GridLayout and cells in game activity_game
+    
+    Adding a drawable for an empty cell and adding views to it
+    in the game activity alllowed me to display an empty grid on
+    screen. I'll need to add code to make it all fit on screen.
+
+[33mcommit 88ca82af0983a0f4242216e9aed661fb4e411a62[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Mon Aug 7 16:18:49 2017 -0400
+
+    Add drawable for empty cell
+    
+    Some code added to other files to accomodate working with
+    image resources. Will need to be expanded to fully support
+    them.
+
+[33mcommit 2d61278a661d0322a519e102a1dbda6d9768adab[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Mon Aug 7 13:45:46 2017 -0400
+
+    Create GridCellUnit class
+    
+    Will be used to make up both gameboard and tetronimoes.
+
+[33mcommit 3ba11d73fd0b4f1a11dfe7479cd1f51c0a3cd6c9[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Mon Aug 7 12:56:39 2017 -0400
+
+    Create GridLayout for gameboard
+    
+    GridLayout and custom views (to be created) will be used
+    in favor of Gameboard class.
+
+[33mcommit b24bcc389e23bb7c9a00df4956aabbf89b6db127[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Mon Aug 7 12:49:17 2017 -0400
+
+    Delete Gameboard class
+    
+    Delete Gameboard because subordinate views will handle some
+    logic. Better to use logic from gameboard in game activity.
+
+[33mcommit e92563f8577b8b2fec525b8dd9dd95b35f3a87e1[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Sat Aug 5 23:41:35 2017 -0400
+
+    Create class for tetronimo
+    
+    Specific types of tetronimoes will extend this class.
+
+[33mcommit d81aada8755dd1c5ee14bcf635b36ed3a6df57cf[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Sat Aug 5 23:25:37 2017 -0400
+
+    Create GameBoard class
+
+[33mcommit 5785b2ea6e2f28f68ae5a9949cf0342f6aa08f1a[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Sat Aug 5 15:54:29 2017 -0400
+
+    Add readme file to cover ass legally
+
+[33mcommit c16c7d4712b004b2e680c497e1320d640721ed0f[m
+Author: Anthony Bias <abias1122@gmail.com>
+Date:   Sat Aug 5 15:03:57 2017 -0400
+
+    Initial commit
