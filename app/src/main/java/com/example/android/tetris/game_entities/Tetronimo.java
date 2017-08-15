@@ -18,12 +18,18 @@ public abstract class Tetronimo {
 
     private GridCellView[] mComponentCells;
     private GridCellView[] mGameGridCells;
+    private SortCode lastUsedSortCode;
+
+    private enum SortCode {
+        X_SORT, Y_SORT, UNSORTED
+    }
 
     public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId) {
 
         mGameGridCells = gameGridCells;
         mComponentCells = new GridCellView[4];
         DRAWABLE_ID = drawableId;
+        lastUsedSortCode = SortCode.UNSORTED;
 
         for(int i = 0; i < initialPositions.length; i++) {
             //index 0 is x position; index 1 is y position
@@ -94,6 +100,49 @@ public abstract class Tetronimo {
 //        Log.i(TAG, "break");
     }
 
+    public void moveLeft() {
+        int yPos;
+        int xPos;
+        sortComponentGridCellsByXPos();
+        for(int i = 0; i < mComponentCells.length; i++) {
+
+            if(mComponentCells[i].getXPos() == 0) {
+                return;
+            }
+
+            yPos = mComponentCells[i].getYPos();
+            xPos = mComponentCells[i].getXPos();
+            GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
+//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
+//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
+
+            boolean checkedCellIsComponent = false;
+            if(cellToCheck.getOccupied()) {
+
+                for(GridCellView gridCell : mComponentCells) {
+                    if(cellToCheck.equals(gridCell)) {
+                        checkedCellIsComponent = true;
+                        break;
+                    }
+                }
+                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
+                if(!checkedCellIsComponent) {
+                    return;
+                }
+            }
+        }
+
+        for(int i = 0; i < mComponentCells.length; i++) {
+            xPos = mComponentCells[i].getXPos();
+            yPos = mComponentCells[i].getYPos();
+            mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i] = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
+            mComponentCells[i].setImageResource(DRAWABLE_ID);
+        }
+
+//        Log.i(TAG, "break");
+    }
+
     public void moveRight() {
         int yPos;
         int xPos;
@@ -138,6 +187,10 @@ public abstract class Tetronimo {
     }
 
     private void sortComponentGridCellsByYPos() {
+        if(lastUsedSortCode == SortCode.Y_SORT) {
+            return;
+        }
+
         boolean swapped;
         do {
             swapped = false;
@@ -153,9 +206,15 @@ public abstract class Tetronimo {
                 }
             }
         } while (swapped);
+
+        lastUsedSortCode = SortCode.Y_SORT;
     }
 
     private void sortComponentGridCellsByXPos() {
+        if(lastUsedSortCode == SortCode.X_SORT) {
+            return;
+        }
+
         boolean swapped;
         do {
             swapped = false;
@@ -171,5 +230,7 @@ public abstract class Tetronimo {
                 }
             }
         } while (swapped);
+
+        lastUsedSortCode = SortCode.X_SORT;
     }
 }

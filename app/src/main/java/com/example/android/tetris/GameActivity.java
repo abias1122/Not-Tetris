@@ -32,7 +32,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private GestureDetectorCompat mGestureDetector;
 
     //temporary until I create tetronimo generator
-    TTetronimo straightTetronimo;
+    TTetronimo debugTetronimo;
 
     private float mInitY;
     private float mInitX;
@@ -92,12 +92,12 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        straightTetronimo = new TTetronimo(mGridCellsViews);
+        debugTetronimo = new TTetronimo(mGridCellsViews);
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                straightTetronimo.moveDown();
+                debugTetronimo.moveDown();
                 mMoveDownHandler.postDelayed(this, delay);
             }
         }, delay);
@@ -125,6 +125,13 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                     Log.d(DEBUG_TAG, "move left: " + event.toString());
                     mInitX = x;
                     mInitY = y;
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            debugTetronimo.moveLeft();
+                        }
+                    });
                 }
                 //Move right one column
                 else if ((mInitX + mMovementThreshold) < x) {
@@ -135,7 +142,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            straightTetronimo.moveRight();
+                            debugTetronimo.moveRight();
                         }
                     });
                 }
