@@ -107,8 +107,8 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
-            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
-            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
+//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
+//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -134,7 +134,7 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
-        Log.i(TAG, "break");
+//        Log.i(TAG, "break");
     }
 
     private void sortComponentGridCellsByYPos() {
@@ -162,7 +162,7 @@ public abstract class Tetronimo {
             //
             // Log.i(TAG, "swapped: false");
             for(int i = 0; i < mComponentCells.length - 1; i++) {
-                if(mComponentCells[i].getXPos() < mComponentCells[i + 1].getXPos()) {
+                if(mComponentCells[i].getXPos() > mComponentCells[i + 1].getXPos()) {
                     GridCellView temp = mComponentCells[i];
                     mComponentCells[i] = mComponentCells[i + 1];
                     mComponentCells[i + 1] = temp;
