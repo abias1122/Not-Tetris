@@ -31,6 +31,9 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private Handler mMoveDownHandler;
     private GestureDetectorCompat mGestureDetector;
 
+    //temporary until I create tetronimo generator
+    TTetronimo straightTetronimo;
+
     private float mInitY;
     private float mInitX;
     private float mMovementThreshold;
@@ -89,7 +92,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        final TTetronimo straightTetronimo = new TTetronimo(mGridCellsViews);
+        straightTetronimo = new TTetronimo(mGridCellsViews);
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
@@ -128,6 +131,13 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                     Log.d(DEBUG_TAG, "move right: " + event.toString());
                     mInitX = x;
                     mInitY = y;
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            straightTetronimo.moveRight();
+                        }
+                    });
                 }
                 //Moving up to reset fall speed if previously sped up
                 else if((mInitY - mMovementThreshold) > y) {
