@@ -209,8 +209,14 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public boolean onFling(MotionEvent event1, MotionEvent event2, float vX, float vY) {
-        final int velocityThreshold = 50;
+        final int velocityThreshold = 200;
         if(vY > velocityThreshold) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    debugTetronimo.moveToBottom();
+                }
+            });
             Log.d(DEBUG_TAG, "SWIPE DOWN!");
         }
         return false;

@@ -58,7 +58,10 @@ public abstract class Tetronimo {
 
         int yPos;
         int xPos;
-        sortComponentGridCellsByYPos();
+        if(!(lastUsedSortCode == SortCode.Y_SORT)) {
+            sortComponentGridCellsByYPos();
+        }
+
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getYPos() == NUM_ROWS - 1) {
@@ -103,7 +106,10 @@ public abstract class Tetronimo {
     public void moveLeft() {
         int yPos;
         int xPos;
-        sortComponentGridCellsByXPos();
+        if(!(lastUsedSortCode == SortCode.X_SORT)) {
+            sortComponentGridCellsByXPos();
+        }
+
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getXPos() == 0) {
@@ -146,7 +152,10 @@ public abstract class Tetronimo {
     public void moveRight() {
         int yPos;
         int xPos;
-        sortComponentGridCellsByXPos();
+        if(!(lastUsedSortCode == SortCode.X_SORT)) {
+            sortComponentGridCellsByXPos();
+        }
+
         for(int i = mComponentCells.length - 1; i >= 0; i--) {
 
             if(mComponentCells[i].getXPos() == NUM_COLS - 1) {
@@ -186,11 +195,68 @@ public abstract class Tetronimo {
 //        Log.i(TAG, "break");
     }
 
-    private void sortComponentGridCellsByYPos() {
-        if(lastUsedSortCode == SortCode.Y_SORT) {
-            return;
+    public void moveToBottom() {
+
+        if(!(lastUsedSortCode == SortCode.Y_SORT)) {
+            sortComponentGridCellsByYPos();
         }
 
+        //Lower rows are represented with higher numbers
+        int highestRowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
+        int lowestRowInTetron = mComponentCells[0].getYPos();
+        for(int i = 1; i < mComponentCells.length; i++) {
+            if(mComponentCells[i].getYPos() < lowestRowInTetron) {
+                continue;
+            }
+
+            int row = getLowestFreeRowBeneathCell(mComponentCells[i]);
+            if(row < highestRowToFallTo) {
+                highestRowToFallTo = row;
+            }
+        }
+
+        int yPosToUse = mComponentCells[0].getYPos();
+        int xPos;
+        for(int i = 0; i < mComponentCells.length; i++) {
+
+            xPos = mComponentCells[i].getXPos();
+            if(mComponentCells[i].getYPos() < yPosToUse) {
+                yPosToUse = mComponentCells[i].getYPos();
+                highestRowToFallTo--;
+            }
+
+            mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i] = mGameGridCells[(highestRowToFallTo * NUM_COLS) + xPos];
+            mComponentCells[i].setImageResource(DRAWABLE_ID);
+        }
+    }
+
+    /**
+     *
+     * @param gridCell
+     * @return lowest free row below gridCell. Returns gridCell's
+     * current yPos if there is an occupied cell directly beneath
+     */
+    private int getLowestFreeRowBeneathCell(GridCellView gridCell) {
+        int yPos = gridCell.getYPos();
+        int xPos = gridCell.getXPos();
+        boolean lowerCellExists = yPos < NUM_ROWS - 1;
+
+        while(lowerCellExists) {
+            if(mGameGridCells[((yPos + 1) * NUM_COLS) + xPos].getOccupied()) {
+                break;
+            }
+
+            yPos++;
+            lowerCellExists = yPos < NUM_ROWS - 1;
+        }
+
+        return yPos;
+    }
+
+    private void sortComponentGridCellsByYPos() {
+
+        //greatest to least
         boolean swapped;
         do {
             swapped = false;
@@ -211,9 +277,6 @@ public abstract class Tetronimo {
     }
 
     private void sortComponentGridCellsByXPos() {
-        if(lastUsedSortCode == SortCode.X_SORT) {
-            return;
-        }
 
         boolean swapped;
         do {
