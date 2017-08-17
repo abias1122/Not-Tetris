@@ -192,6 +192,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent) {
         //TODO: Call rotate on provided tetron once implemented
+        debugTetronimo.rotate();
         Log.d(DEBUG_TAG, "rotate");
         return false;
     }
@@ -210,7 +211,10 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     @Override
     public boolean onFling(MotionEvent event1, MotionEvent event2, float vX, float vY) {
         final int velocityThreshold = 200;
-        if(vY > velocityThreshold) {
+        final float xThreshold = 200;
+        final float xMovement = Math.abs(event1.getX() - event2.getX());
+
+        if(vY > velocityThreshold && xMovement < xThreshold) {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {

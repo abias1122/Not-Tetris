@@ -19,12 +19,13 @@ public abstract class Tetronimo {
     private GridCellView[] mComponentCells;
     private GridCellView[] mGameGridCells;
     private SortCode lastUsedSortCode;
+    private GridCellView mAnchorCell;
 
     private enum SortCode {
         X_SORT, Y_SORT, UNSORTED
     }
 
-    public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId) {
+    public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int anchorCellIndex) {
 
         mGameGridCells = gameGridCells;
         mComponentCells = new GridCellView[4];
@@ -42,6 +43,8 @@ public abstract class Tetronimo {
             gridCell.setOccupied(true);
         gridCell.setImageResource(DRAWABLE_ID);
         }
+
+        mAnchorCell = mComponentCells[anchorCellIndex];
     }
 
     public GridCellView[] getGameGridCells() {
@@ -50,6 +53,18 @@ public abstract class Tetronimo {
 
     public GridCellView[] getComponentCells() {
         return mComponentCells;
+    }
+
+    public GridCellView getAnchorCell () {return mAnchorCell;}
+
+    public int getDrawableId() {return DRAWABLE_ID;}
+
+    public void setComponentCells(GridCellView[] newComponents) {
+        for(int i = 0; i < mComponentCells.length; i++) {
+            mComponentCells[i] = newComponents[i];
+        }
+
+        lastUsedSortCode = SortCode.UNSORTED;
     }
 
     public abstract void rotate();
@@ -91,6 +106,13 @@ public abstract class Tetronimo {
                 }
             }
         }
+        if(mAnchorCell.getYPos() < NUM_ROWS - 1) {
+            mAnchorCell =
+                    mGameGridCells[((mAnchorCell.getYPos() + 1) * NUM_COLS) + mAnchorCell.getXPos()];
+        }
+
+        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
 
         for(int i = 0; i < mComponentCells.length; i++) {
             xPos = mComponentCells[i].getXPos();
@@ -100,7 +122,7 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
-//        Log.i(TAG, "break");
+        Log.i(TAG, "break");
     }
 
     public void moveLeft() {
@@ -146,6 +168,10 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
+        if(mAnchorCell.getXPos() == 0) {
+            mAnchorCell =
+                    mComponentCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() - 1)];
+        }
 //        Log.i(TAG, "break");
     }
 
@@ -192,6 +218,10 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
+        if(mAnchorCell.getXPos() == (NUM_COLS - 1)) {
+            mAnchorCell =
+                    mComponentCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() + 1)];
+        }
 //        Log.i(TAG, "break");
     }
 
