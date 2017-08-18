@@ -1,9 +1,7 @@
 package com.example.android.tetris;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,14 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
-import com.example.android.tetris.game_entities.LTetronimo;
-import com.example.android.tetris.game_entities.ReverseLTetronimo;
-import com.example.android.tetris.game_entities.STetronimo;
-import com.example.android.tetris.game_entities.SquareTetronimo;
-import com.example.android.tetris.game_entities.StraightTetronimo;
-import com.example.android.tetris.game_entities.TTetronimo;
-import com.example.android.tetris.game_entities.Tetronimo;
-import com.example.android.tetris.game_entities.ZTetronimo;
+import com.example.android.tetris.game_entities.Tetronimoes.TTetronimo;
 
 public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 

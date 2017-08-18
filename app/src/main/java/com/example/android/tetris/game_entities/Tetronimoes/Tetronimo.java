@@ -1,9 +1,10 @@
-package com.example.android.tetris.game_entities;
+package com.example.android.tetris.game_entities.Tetronimoes;
 
 import android.util.Log;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.R;
+import com.example.android.tetris.game_entities.GridCellView;
 
 /**
  * A shape comprising of four squares used in Tetris
@@ -11,19 +12,25 @@ import com.example.android.tetris.R;
 
 public abstract class Tetronimo {
 
-    private final int NUM_COLS = 10;
-    private final int NUM_ROWS = 24;
-    private final int DRAWABLE_ID;
-    private final String TAG = "Tetronimo";
+    protected final int NUM_COLS = 10;
+    protected final int NUM_ROWS = 24;
+    protected final int DRAWABLE_ID;
+    protected final String TAG = "Tetronimo";
 
-    private GridCellView[] mComponentCells;
-    private GridCellView[] mGameGridCells;
-    private SortCode lastUsedSortCode;
-    private GridCellView mAnchorCell;
+    protected GridCellView[] mComponentCells;
+    protected GridCellView[] mGameGridCells;
+    protected SortCode lastUsedSortCode;
+    protected GridCellView mAnchorCell;
 
     private enum SortCode {
         X_SORT, Y_SORT, UNSORTED
     }
+
+    protected enum RotState {
+        ZERO_DEG, NINETY_DEG,
+        ONE_EIGHTY_DEG, TWO_SEVENTY_DEG;
+    }
+    protected RotState mCurrentState;
 
     public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int anchorCellIndex) {
 
@@ -41,30 +48,11 @@ public abstract class Tetronimo {
 
         for(GridCellView gridCell : mComponentCells) {
             gridCell.setOccupied(true);
-        gridCell.setImageResource(DRAWABLE_ID);
+            gridCell.setImageResource(DRAWABLE_ID);
         }
 
         mAnchorCell = mComponentCells[anchorCellIndex];
-    }
-
-    public GridCellView[] getGameGridCells() {
-        return mGameGridCells;
-    }
-
-    public GridCellView[] getComponentCells() {
-        return mComponentCells;
-    }
-
-    public GridCellView getAnchorCell () {return mAnchorCell;}
-
-    public int getDrawableId() {return DRAWABLE_ID;}
-
-    public void setComponentCells(GridCellView[] newComponents) {
-        for(int i = 0; i < mComponentCells.length; i++) {
-            mComponentCells[i] = newComponents[i];
-        }
-
-        lastUsedSortCode = SortCode.UNSORTED;
+        mCurrentState = RotState.ZERO_DEG;
     }
 
     public abstract void rotate();
@@ -168,9 +156,9 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
-        if(mAnchorCell.getXPos() == 0) {
+        if(mAnchorCell.getXPos() != 0) {
             mAnchorCell =
-                    mComponentCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() - 1)];
+                    mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() - 1)];
         }
 //        Log.i(TAG, "break");
     }
@@ -218,9 +206,9 @@ public abstract class Tetronimo {
             mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
-        if(mAnchorCell.getXPos() == (NUM_COLS - 1)) {
+        if(mAnchorCell.getXPos() != (NUM_COLS - 1)) {
             mAnchorCell =
-                    mComponentCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() + 1)];
+                    mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() + 1)];
         }
 //        Log.i(TAG, "break");
     }
