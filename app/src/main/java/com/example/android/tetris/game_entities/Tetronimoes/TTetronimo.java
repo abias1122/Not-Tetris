@@ -174,9 +174,52 @@ public class TTetronimo extends Tetronimo {
             }
 
             case TWO_SEVENTY_DEG: {
+                int anchorXPos = mAnchorCell.getXPos();
+                int anchorYPos = mAnchorCell.getYPos();
 
+                if(mAnchorCell.getXPos() == (NUM_COLS - 1) && mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                    useNormalRotate = false;
+                }
+
+                Log.i(TAG, "useNormalRotate = " + useNormalRotate);
+                if(useNormalRotate) {
+                    for(int i = 0; i < mComponentCells.length; i++) {
+
+                        //cell is directly below anchor cell
+                        if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() + 1)) {
+                            mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
+                            mComponentCells[i].setImageResource(DRAWABLE_ID);
+                        }
+                    }
+                }
+                else {
+                    for(int i = 0; i < mComponentCells.length; i++) {
+
+                        //cell is directly above anchor cell
+                        if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() - 1)) {
+                            mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i] = mGameGridCells[(mComponentCells[i].getYPos() * NUM_COLS) + (mComponentCells[i].getXPos() - 1)];
+                            mComponentCells[i].setImageResource(DRAWABLE_ID);
+                        }
+
+                        //cell is directly below anchor cell
+                        if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() + 1)) {
+                            mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 2)];
+                            mComponentCells[i].setImageResource(DRAWABLE_ID);
+                        }
+                    }
+
+                    mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
+                    Log.i(TAG, "ANCHOR CHANGED");
+                    Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                }
+
+                mCurrentState = RotState.ZERO_DEG;
+                return;
             }
         }
-
     }
 }
