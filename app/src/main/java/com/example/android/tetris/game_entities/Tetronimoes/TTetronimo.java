@@ -26,15 +26,21 @@ public class TTetronimo extends Tetronimo {
     public void rotate() {
         //TODO: implement rotate()
         boolean useNormalRotate = true;
+        int anchorXPos = mAnchorCell.getXPos();
+        int anchorYPos = mAnchorCell.getYPos();
+        Log.i(TAG, "=========IN ROTATE=========");
+        Log.i(TAG, "anchorCell xPos: " + anchorXPos);
+        Log.i(TAG, "anchorCell yPos: " + anchorYPos);
 
         switch (mCurrentState) {
 
             case ZERO_DEG: {
-                int anchorXPos = mAnchorCell.getXPos();
-                int anchorYPos = mAnchorCell.getYPos();
 
                 if(anchorYPos == (NUM_ROWS - 1) || mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
                     useNormalRotate = false;
+
+                    //this logging causes crash if tetronimo is at the bottom of the screen
+                    //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
@@ -44,8 +50,11 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly left of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
                 }
@@ -55,15 +64,21 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly left of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
 
                         //cell is directly right of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + mComponentCells[i].getXPos()];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
 
@@ -74,14 +89,13 @@ public class TTetronimo extends Tetronimo {
                 }
 
                 mCurrentState = RotState.NINETY_DEG;
-                return;
+                break;
             }
 
             case NINETY_DEG: {
-                int anchorXPos = mAnchorCell.getXPos();
-                int anchorYPos = mAnchorCell.getYPos();
 
-                if(anchorXPos == 0 || mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                if(anchorXPos == 0 || mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                    Log.i(TAG, "Cell left of anchor occupied: " + mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied());
                     useNormalRotate = false;
                 }
 
@@ -92,8 +106,11 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly above anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
                 }
@@ -103,15 +120,21 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly above anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 2)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
 
                         //cell is directly below anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(mComponentCells[i].getYPos() * NUM_COLS) + (mComponentCells[i].getXPos() + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
 
@@ -122,14 +145,13 @@ public class TTetronimo extends Tetronimo {
                 }
 
                 mCurrentState = RotState.ONE_EIGHTY_DEG;
-                return;
+                break;
             }
 
             case ONE_EIGHTY_DEG: {
-                int anchorXPos = mAnchorCell.getXPos();
-                int anchorYPos = mAnchorCell.getYPos();
 
                 if(mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                    Log.i(TAG, "Cell above anchor occupied: " + mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied());
                     useNormalRotate = false;
                 }
 
@@ -140,8 +162,11 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly right of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + mAnchorCell.getXPos()];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
                 }
@@ -151,15 +176,21 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly right of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((anchorYPos + 2) * NUM_COLS) + mAnchorCell.getXPos()];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
 
                         //cell is directly right of anchor cell
                         if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[((mComponentCells[i].getYPos() + 1) * NUM_COLS) + mComponentCells[i].getXPos()];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
 
@@ -170,14 +201,14 @@ public class TTetronimo extends Tetronimo {
                 }
 
                 mCurrentState = RotState.TWO_SEVENTY_DEG;
-                return;
+                break;
             }
 
             case TWO_SEVENTY_DEG: {
-                int anchorXPos = mAnchorCell.getXPos();
-                int anchorYPos = mAnchorCell.getYPos();
 
-                if(mAnchorCell.getXPos() == (NUM_COLS - 1) && mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                if(mAnchorCell.getXPos() == (NUM_COLS - 1) || mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                    Log.i(TAG, "Cell right of anchor occupied: " + mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied());
+
                     useNormalRotate = false;
                 }
 
@@ -188,8 +219,11 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly below anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
                 }
@@ -199,15 +233,21 @@ public class TTetronimo extends Tetronimo {
                         //cell is directly above anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(mComponentCells[i].getYPos() * NUM_COLS) + (mComponentCells[i].getXPos() - 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
 
                         //cell is directly below anchor cell
                         if(mComponentCells[i].getYPos() == (mAnchorCell.getYPos() + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
+                            mComponentCells[i].setOccupied(false);
+
                             mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 2)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
+                            mComponentCells[i].setOccupied(true);
                         }
                     }
 
@@ -218,8 +258,10 @@ public class TTetronimo extends Tetronimo {
                 }
 
                 mCurrentState = RotState.ZERO_DEG;
-                return;
+                break;
             }
         }
+
+        Log.i(TAG, "========DONE ROTATE=======");
     }
 }

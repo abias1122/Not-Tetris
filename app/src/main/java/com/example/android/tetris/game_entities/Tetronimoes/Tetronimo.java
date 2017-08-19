@@ -19,12 +19,7 @@ public abstract class Tetronimo {
 
     protected GridCellView[] mComponentCells;
     protected GridCellView[] mGameGridCells;
-    protected SortCode lastUsedSortCode;
     protected GridCellView mAnchorCell;
-
-    private enum SortCode {
-        X_SORT, Y_SORT, UNSORTED
-    }
 
     protected enum RotState {
         ZERO_DEG, NINETY_DEG,
@@ -37,7 +32,6 @@ public abstract class Tetronimo {
         mGameGridCells = gameGridCells;
         mComponentCells = new GridCellView[4];
         DRAWABLE_ID = drawableId;
-        lastUsedSortCode = SortCode.UNSORTED;
 
         for(int i = 0; i < initialPositions.length; i++) {
             //index 0 is x position; index 1 is y position
@@ -61,10 +55,8 @@ public abstract class Tetronimo {
 
         int yPos;
         int xPos;
-        if(!(lastUsedSortCode == SortCode.Y_SORT)) {
-            sortComponentGridCellsByYPos();
-        }
 
+        sortComponentGridCellsByYPos();
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getYPos() == NUM_ROWS - 1) {
@@ -87,7 +79,7 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
+//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
                     //TODO: Implement place()
                     return;
@@ -99,6 +91,7 @@ public abstract class Tetronimo {
                     mGameGridCells[((mAnchorCell.getYPos() + 1) * NUM_COLS) + mAnchorCell.getXPos()];
         }
 
+        Log.i(TAG, "ANCHOR CHANGED");
         Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
         Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
 
@@ -106,20 +99,21 @@ public abstract class Tetronimo {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
             mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i].setOccupied(false);
+
             mComponentCells[i] = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
             mComponentCells[i].setImageResource(DRAWABLE_ID);
+            mComponentCells[i].setOccupied(true);
         }
 
-        Log.i(TAG, "break");
+        Log.i(TAG, "------------------End moveDown()----------------------");
     }
 
     public void moveLeft() {
         int yPos;
         int xPos;
-        if(!(lastUsedSortCode == SortCode.X_SORT)) {
-            sortComponentGridCellsByXPos();
-        }
 
+        sortComponentGridCellsByXPos();
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getXPos() == 0) {
@@ -129,8 +123,8 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
-//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
-//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
+//            Log.i(TAG, "xPos: " + xPos);
+//            Log.i(TAG, "yPos: " + yPos);
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -141,7 +135,7 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
+//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
                     return;
                 }
@@ -152,73 +146,81 @@ public abstract class Tetronimo {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
             mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i].setOccupied(false);
+
             mComponentCells[i] = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
             mComponentCells[i].setImageResource(DRAWABLE_ID);
+            mComponentCells[i].setOccupied(true);
         }
 
         if(mAnchorCell.getXPos() != 0) {
             mAnchorCell =
                     mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() - 1)];
         }
-//        Log.i(TAG, "break");
+
+        Log.i(TAG, "ANCHOR CHANGED");
+        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+        Log.i(TAG, "------------------End moveLeft()----------------------");
     }
 
     public void moveRight() {
         int yPos;
         int xPos;
-        if(!(lastUsedSortCode == SortCode.X_SORT)) {
-            sortComponentGridCellsByXPos();
-        }
 
-        for(int i = mComponentCells.length - 1; i >= 0; i--) {
+        sortComponentGridCellsByXPos();
+        for (int i = mComponentCells.length - 1; i >= 0; i--) {
 
-            if(mComponentCells[i].getXPos() == NUM_COLS - 1) {
+            if (mComponentCells[i].getXPos() == NUM_COLS - 1) {
                 return;
             }
 
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
-//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
-//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
+//            Log.i(TAG, "xPos: " + xPos);
+//            Log.i(TAG, "yPos: " + yPos);
 
             boolean checkedCellIsComponent = false;
-            if(cellToCheck.getOccupied()) {
+            if (cellToCheck.getOccupied()) {
 
-                for(GridCellView gridCell : mComponentCells) {
-                    if(cellToCheck.equals(gridCell)) {
+                for (GridCellView gridCell : mComponentCells) {
+                    if (cellToCheck.equals(gridCell)) {
                         checkedCellIsComponent = true;
                         break;
                     }
                 }
-                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
-                if(!checkedCellIsComponent) {
+//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
+                if (!checkedCellIsComponent) {
                     return;
                 }
             }
         }
 
-        for(int i = mComponentCells.length - 1; i >= 0; i--) {
+        for (int i = mComponentCells.length - 1; i >= 0; i--) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
             mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i].setOccupied(false);
+
             mComponentCells[i] = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
             mComponentCells[i].setImageResource(DRAWABLE_ID);
+            mComponentCells[i].setOccupied(true);
         }
 
-        if(mAnchorCell.getXPos() != (NUM_COLS - 1)) {
+        if (mAnchorCell.getXPos() != (NUM_COLS - 1)) {
             mAnchorCell =
                     mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() + 1)];
         }
-//        Log.i(TAG, "break");
+        Log.i(TAG, "ANCHOR CHANGED");
+        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+        Log.i(TAG, "------------------End moveRight()----------------------");
     }
 
     public void moveToBottom() {
 
-        if(!(lastUsedSortCode == SortCode.Y_SORT)) {
-            sortComponentGridCellsByYPos();
-        }
-
+        sortComponentGridCellsByYPos();
         //Lower rows are represented with higher numbers
         int highestRowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
         int lowestRowInTetron = mComponentCells[0].getYPos();
@@ -244,8 +246,11 @@ public abstract class Tetronimo {
             }
 
             mComponentCells[i].setImageResource(android.R.color.transparent);
+            mComponentCells[i].setOccupied(false);
+
             mComponentCells[i] = mGameGridCells[(highestRowToFallTo * NUM_COLS) + xPos];
             mComponentCells[i].setImageResource(DRAWABLE_ID);
+            mComponentCells[i].setOccupied(true);
         }
     }
 
@@ -290,8 +295,6 @@ public abstract class Tetronimo {
                 }
             }
         } while (swapped);
-
-        lastUsedSortCode = SortCode.Y_SORT;
     }
 
     private void sortComponentGridCellsByXPos() {
@@ -311,7 +314,5 @@ public abstract class Tetronimo {
                 }
             }
         } while (swapped);
-
-        lastUsedSortCode = SortCode.X_SORT;
     }
 }
