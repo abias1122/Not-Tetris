@@ -245,6 +245,10 @@ public abstract class Tetronimo {
                 highestRowToFallTo--;
             }
 
+            if(mComponentCells[i].equals(mAnchorCell)) {
+                mAnchorCell = mGameGridCells[(highestRowToFallTo * NUM_COLS) + xPos];
+            }
+
             mComponentCells[i].setImageResource(android.R.color.transparent);
             mComponentCells[i].setOccupied(false);
 
