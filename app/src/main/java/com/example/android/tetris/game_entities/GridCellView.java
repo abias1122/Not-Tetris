@@ -45,6 +45,19 @@ public class GridCellView extends ImageView {
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof GridCellView)) {
+            return false;
+        }
+
+        GridCellView cellToCheck = (GridCellView) obj;
+        return xPos == cellToCheck.getXPos() &&
+               yPos == cellToCheck.getYPos() &&
+               isOccupied == cellToCheck.getOccupied();
+    }
+
     public void setOccupied(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
