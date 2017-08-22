@@ -86,7 +86,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        debugTetronimo = new ZTetronimo(mGridCellsViews);
+        debugTetronimo = new STetronimo(mGridCellsViews);
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override

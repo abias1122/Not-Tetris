@@ -63,7 +63,7 @@ public class ZTetronimo extends Tetronimo {
                             mComponentCells[i].setOccupied(true);
                         }
 
-                        //cell is directly below of anchor cell
+                        //cell is directly below anchor cell
                         if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);

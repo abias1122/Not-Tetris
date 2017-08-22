@@ -35,8 +35,8 @@ public class STetronimo extends Tetronimo {
         switch (mCurrentState) {
             case ZERO_DEG: {
                 if(anchorYPos == 0 ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() ||
-                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() ||
+                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
                     useNormalRotate = false;
 
                     //this logging causes crash if tetronimo is at the bottom of the screen
@@ -53,22 +53,22 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally bottom right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
+                        //cell is diagonally bottom left of anchor cell
+                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
 
-                        //cell is directly below of anchor cell
-                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
+                        //cell is directly right of anchor cell
+                        if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)];
+                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
@@ -107,14 +107,14 @@ public class STetronimo extends Tetronimo {
 //                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
 //                }
 
-                mCurrentState = RotState.ONE_EIGHTY_DEG;
+                mCurrentState = RotState.NINETY_DEG;
                 break;
             }
 
             case NINETY_DEG: {
                 if(anchorXPos == (NUM_COLS - 1) ||
                         mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied() ||
-                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
                     useNormalRotate = false;
 
                     //this logging causes crash if tetronimo is at the bottom of the screen
@@ -131,22 +131,22 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally bottom left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
+                        //cell is diagonally top left of anchor cell
+                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
 
-                        //cell is directly left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
+                        //cell is directly below anchor cell
+                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
@@ -191,8 +191,8 @@ public class STetronimo extends Tetronimo {
 
             case ONE_EIGHTY_DEG: {
                 if(anchorYPos == (NUM_ROWS - 1) ||
-                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() ||
+                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
                     useNormalRotate = false;
 
                     //this logging causes crash if tetronimo is at the bottom of the screen
@@ -209,22 +209,22 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally top left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
+                        //cell is diagonally top right of anchor cell
+                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
+                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
 
-                        //cell is directly above anchor cell
-                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
+                        //cell is directly left of anchor cell
+                        if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
@@ -269,8 +269,8 @@ public class STetronimo extends Tetronimo {
 
             case TWO_SEVENTY_DEG: {
                 if(anchorXPos == 0 ||
-                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied() ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied() ||
+                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
                     useNormalRotate = false;
 
                     //this logging causes crash if tetronimo is at the bottom of the screen
@@ -287,22 +287,22 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally top right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
+                        //cell is diagonally bottom right of anchor cell
+                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
 
-                        //cell is directly right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
+                        //cell is directly above anchor cell
+                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }
