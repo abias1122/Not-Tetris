@@ -46,7 +46,6 @@ public class ZTetronimo extends Tetronimo {
 
                 int componentXPos;
                 int componentYPos;
-                sortComponentGridCellsByXPos();
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
@@ -125,7 +124,6 @@ public class ZTetronimo extends Tetronimo {
 
                 int componentXPos;
                 int componentYPos;
-                sortComponentGridCellsByXPos();
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
