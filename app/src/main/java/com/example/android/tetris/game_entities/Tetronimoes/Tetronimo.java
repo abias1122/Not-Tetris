@@ -281,7 +281,7 @@ public abstract class Tetronimo {
         return yPos;
     }
 
-    private void sortComponentGridCellsByYPos() {
+    protected void sortComponentGridCellsByYPos() {
 
         //greatest to least
         boolean swapped;
@@ -301,7 +301,7 @@ public abstract class Tetronimo {
         } while (swapped);
     }
 
-    private void sortComponentGridCellsByXPos() {
+    protected void sortComponentGridCellsByXPos() {
 
         boolean swapped;
         do {

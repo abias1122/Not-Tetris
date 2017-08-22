@@ -24,7 +24,9 @@ public class TTetronimo extends Tetronimo {
 
     @Override
     public void rotate() {
-        //TODO: implement rotate()
+        //TODO: Handle weird edge cases
+        //There is no code to handle if the non-normal
+        //rotations also go into occupied cells
         boolean useNormalRotate = true;
         int anchorXPos = mAnchorCell.getXPos();
         int anchorYPos = mAnchorCell.getYPos();
@@ -43,12 +45,17 @@ public class TTetronimo extends Tetronimo {
                     //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
+                int componentXPos;
+                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
                     for(int i = 0; i < mComponentCells.length; i++) {
 
+                        componentXPos = mComponentCells[i].getXPos();
+                        componentYPos = mComponentCells[i].getYPos();
+
                         //cell is directly left of anchor cell
-                        if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() - 1)) {
+                        if(componentXPos == (anchorXPos - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
@@ -61,8 +68,10 @@ public class TTetronimo extends Tetronimo {
                 else {
                     for(int i = 0; i < mComponentCells.length; i++) {
 
+                        componentXPos = mComponentCells[i].getXPos();
+
                         //cell is directly left of anchor cell
-                        if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() - 1)) {
+                        if(componentXPos == (anchorXPos - 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
@@ -72,11 +81,11 @@ public class TTetronimo extends Tetronimo {
                         }
 
                         //cell is directly right of anchor cell
-                        if(mComponentCells[i].getXPos() == (mAnchorCell.getXPos() + 1)) {
+                        if(componentXPos == (anchorXPos + 1)) {
                             mComponentCells[i].setImageResource(android.R.color.transparent);
                             mComponentCells[i].setOccupied(false);
 
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + mComponentCells[i].getXPos()];
+                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
                             mComponentCells[i].setImageResource(DRAWABLE_ID);
                             mComponentCells[i].setOccupied(true);
                         }

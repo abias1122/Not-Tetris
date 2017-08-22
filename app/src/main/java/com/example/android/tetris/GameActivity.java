@@ -12,6 +12,8 @@ import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.Tetronimoes.TTetronimo;
+import com.example.android.tetris.game_entities.Tetronimoes.Tetronimo;
+import com.example.android.tetris.game_entities.Tetronimoes.ZTetronimo;
 
 public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
@@ -23,7 +25,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private GestureDetectorCompat mGestureDetector;
 
     //temporary until I create tetronimo generator
-    TTetronimo debugTetronimo;
+    Tetronimo debugTetronimo;
 
     private float mInitY;
     private float mInitX;
@@ -83,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        debugTetronimo = new TTetronimo(mGridCellsViews);
+        debugTetronimo = new ZTetronimo(mGridCellsViews);
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
