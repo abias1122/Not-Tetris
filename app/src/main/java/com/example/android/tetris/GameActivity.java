@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
+import com.example.android.tetris.game_entities.Tetronimoes.LTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.STetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.TTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.Tetronimo;
@@ -86,7 +87,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        debugTetronimo = new STetronimo(mGridCellsViews);
+        debugTetronimo = new LTetronimo(mGridCellsViews);
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
