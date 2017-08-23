@@ -27,41 +27,56 @@ public abstract class Tetronimo {
     }
     protected RotState mCurrentState;
 
+    /**
+     * Called from subclass constructors
+     * @param gameGridCells the grid cells being used in the current game
+     * @param initialPositions starting X and Y positions for component cells
+     * @param drawableId drawable to be used when occupying a cell
+     * @param anchorCellIndex index of the anchor cell's X and Y positions in initialPositions
+     */
     public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int anchorCellIndex) {
 
         mGameGridCells = gameGridCells;
         mComponentCells = new GridCellView[4];
         DRAWABLE_ID = drawableId;
 
+        //Set component cells
         for(int i = 0; i < initialPositions.length; i++) {
-            //index 0 is x position; index 1 is y position
-            int[] xAndYPositions = initialPositions[i];
-            mComponentCells[i]
-                    = mGameGridCells[(xAndYPositions[1] * NUM_COLS) + xAndYPositions[0]];
-        }
 
-        for(GridCellView gridCell : mComponentCells) {
-            gridCell.setOccupied(true);
-            gridCell.setImageResource(DRAWABLE_ID);
+            int[] xAndYPositions = initialPositions[i];
+            int cellXPos = xAndYPositions[0];
+            int cellYPos = xAndYPositions[1];
+
+            mComponentCells[i] = mGameGridCells[(cellYPos * NUM_COLS) + cellXPos];
+            mComponentCells[i].setOccupied(true);
+            mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
         mAnchorCell = mComponentCells[anchorCellIndex];
         mCurrentState = RotState.ZERO_DEG;
     }
 
+    /**
+     * Rotate tetronimo 90 degrees clockwise
+     */
     public abstract void rotate();
 
-    public void moveDown() {
+    /**
+     * Move each component cell down by 1 if space is available.
+     * Used to make the tetronimo fall down the screen.
+     * @return true if tetronimo could move down, false if otherwise
+     */
+    public boolean moveDown() {
 
         int yPos;
         int xPos;
 
         sortComponentGridCellsByYPos();
+        //check that tetronimo can move down
         for(int i = 0; i < mComponentCells.length; i++) {
 
             if(mComponentCells[i].getYPos() == NUM_ROWS - 1) {
-                //TODO: Implement place()
-                return;
+                return false;
             }
 
             yPos = mComponentCells[i].getYPos();
@@ -81,20 +96,21 @@ public abstract class Tetronimo {
                 }
 //                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
-                    //TODO: Implement place()
-                    return;
+                    return false;
                 }
             }
         }
-        if(mAnchorCell.getYPos() < NUM_ROWS - 1) {
-            mAnchorCell =
-                    mGameGridCells[((mAnchorCell.getYPos() + 1) * NUM_COLS) + mAnchorCell.getXPos()];
-        }
 
-        Log.i(TAG, "ANCHOR CHANGED");
-        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+        //move anchor down by 1 to keep up with component cells
+        int anchorXPos = mAnchorCell.getXPos();
+        int anchorYPos = mAnchorCell.getYPos();
+        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
 
+//        Log.i(TAG, "ANCHOR CHANGED");
+//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+
+        //move each component cell down by 1
         for(int i = 0; i < mComponentCells.length; i++) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
@@ -106,13 +122,18 @@ public abstract class Tetronimo {
             mComponentCells[i].setOccupied(true);
         }
 
-        Log.i(TAG, "------------------End moveDown()----------------------");
+        return true;
+//        Log.i(TAG, "------------------End moveDown()----------------------");
     }
 
+    /**
+     * Move the tetronimo left by 1 cell
+     */
     public void moveLeft() {
         int yPos;
         int xPos;
 
+        //check if cells directly left of component cells are occupied
         sortComponentGridCellsByXPos();
         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -142,6 +163,7 @@ public abstract class Tetronimo {
             }
         }
 
+        //move each component cell left by 1
         for(int i = 0; i < mComponentCells.length; i++) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
@@ -153,21 +175,25 @@ public abstract class Tetronimo {
             mComponentCells[i].setOccupied(true);
         }
 
-        if(mAnchorCell.getXPos() != 0) {
-            mAnchorCell =
-                    mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() - 1)];
-        }
+        //move anchor left by 1 to keep up with component cells
+        int anchorXPos = mAnchorCell.getXPos();
+        int anchorYPos = mAnchorCell.getYPos();
+        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
 
-        Log.i(TAG, "ANCHOR CHANGED");
-        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
-        Log.i(TAG, "------------------End moveLeft()----------------------");
+//        Log.i(TAG, "ANCHOR CHANGED");
+//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+//        Log.i(TAG, "------------------End moveLeft()----------------------");
     }
 
+    /**
+     * Move the tetronimo right by 1 cell
+     */
     public void moveRight() {
         int yPos;
         int xPos;
 
+        //check if cells directly right of component cells are occupied
         sortComponentGridCellsByXPos();
         for (int i = mComponentCells.length - 1; i >= 0; i--) {
 
@@ -197,6 +223,7 @@ public abstract class Tetronimo {
             }
         }
 
+        //move each component cell right by 1
         for (int i = mComponentCells.length - 1; i >= 0; i--) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
@@ -208,30 +235,34 @@ public abstract class Tetronimo {
             mComponentCells[i].setOccupied(true);
         }
 
-        if (mAnchorCell.getXPos() != (NUM_COLS - 1)) {
-            mAnchorCell =
-                    mGameGridCells[(mAnchorCell.getYPos() * NUM_COLS) + (mAnchorCell.getXPos() + 1)];
-        }
-        Log.i(TAG, "ANCHOR CHANGED");
-        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
-        Log.i(TAG, "------------------End moveRight()----------------------");
+        //move anchor cell right by 1 to keep up with component cells
+        int anchorXPos = mAnchorCell.getXPos();
+        int anchorYPos = mAnchorCell.getYPos();
+        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
+
+//        Log.i(TAG, "ANCHOR CHANGED");
+//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
+//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+//        Log.i(TAG, "------------------End moveRight()----------------------");
     }
 
+    /**
+     * Move tetronimo to lowest available position directly beneath it
+     */
     public void moveToBottom() {
 
         sortComponentGridCellsByYPos();
-        //Lower rows are represented with higher numbers
-        int highestRowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
+        int rowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
         int lowestRowInTetron = mComponentCells[0].getYPos();
+        
         for(int i = 1; i < mComponentCells.length; i++) {
             if(mComponentCells[i].getYPos() < lowestRowInTetron) {
                 continue;
             }
 
             int row = getLowestFreeRowBeneathCell(mComponentCells[i]);
-            if(row < highestRowToFallTo) {
-                highestRowToFallTo = row;
+            if(row < rowToFallTo) {
+                rowToFallTo = row;
             }
         }
 
@@ -242,17 +273,17 @@ public abstract class Tetronimo {
             xPos = mComponentCells[i].getXPos();
             if(mComponentCells[i].getYPos() < yPosToUse) {
                 yPosToUse = mComponentCells[i].getYPos();
-                highestRowToFallTo--;
+                rowToFallTo--;
             }
 
             if(mComponentCells[i].equals(mAnchorCell)) {
-                mAnchorCell = mGameGridCells[(highestRowToFallTo * NUM_COLS) + xPos];
+                mAnchorCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
             }
 
             mComponentCells[i].setImageResource(android.R.color.transparent);
             mComponentCells[i].setOccupied(false);
 
-            mComponentCells[i] = mGameGridCells[(highestRowToFallTo * NUM_COLS) + xPos];
+            mComponentCells[i] = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
             mComponentCells[i].setImageResource(DRAWABLE_ID);
             mComponentCells[i].setOccupied(true);
         }
@@ -281,6 +312,9 @@ public abstract class Tetronimo {
         return yPos;
     }
 
+    /**
+     * Sort component cells from greatest to least YPos
+     */
     protected void sortComponentGridCellsByYPos() {
 
         //greatest to least
@@ -301,6 +335,9 @@ public abstract class Tetronimo {
         } while (swapped);
     }
 
+    /**
+     * Sort component cells from least to greatest XPos
+     */
     protected void sortComponentGridCellsByXPos() {
 
         boolean swapped;
