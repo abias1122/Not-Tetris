@@ -21,7 +21,14 @@ public class TetronimoLinkedList {
 
     public int getSize() {return size;}
 
-    public void insertNode(Node insertNode) {
+    /**
+     * Inserts a node containing data into the circular list
+     * @param data the data to be stored on the node
+     */
+    public void insertNode(Tetronimo data) {
+
+        Node insertNode = new Node();
+        insertNode.setData(data);
 
         if(head == null) {
             head = insertNode;
@@ -57,7 +64,7 @@ public class TetronimoLinkedList {
             this.next = next;
         }
 
-        public Node() {
+        Node() {
             data = null;
             next = null;
         }
@@ -68,6 +75,6 @@ public class TetronimoLinkedList {
 
         public void setData(Tetronimo tetronimo) { data = tetronimo; }
 
-        public  void setNext(Node next) { this.next = next; }
+        public void setNext(Node next) { this.next = next; }
     }
 }

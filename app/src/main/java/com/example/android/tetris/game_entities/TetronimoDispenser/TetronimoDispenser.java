@@ -12,17 +12,17 @@ import com.example.android.tetris.game_entities.Tetronimoes.ZTetronimo;
 
 import java.util.Random;
 
-import static com.example.android.tetris.game_entities.TetronimoDispenser.TetronimoDispenserr.TetronimoType.SQUARE;
-
 /**
  * Spawns tetronimos for players to manipulate. Also
  * populates a ListView for upcoming tetronimoes
  */
 
-public class TetronimoDispenserr {
+public class TetronimoDispenser {
 
     private TetronimoLinkedList mTetronimoList;
     private GridCellView[] mGameGridCells;
+
+    private final int NUM_OF_TETRONIMOES = 4;
 
     private enum TetronimoType {
         SQUARE(0), T(1), STRAIGHT(2),
@@ -50,8 +50,13 @@ public class TetronimoDispenserr {
         }
     }
 
-    public TetronimoDispenserr() {
+    public TetronimoDispenser(GridCellView[] gameGridCells) {
 
+        mGameGridCells = gameGridCells;
+
+        for(int i = 0; i < NUM_OF_TETRONIMOES; i++) {
+            mTetronimoList.insertNode(generateRandomTetronimo());
+        }
     }
 
     private Tetronimo generateRandomTetronimo() {
