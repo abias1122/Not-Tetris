@@ -38,6 +38,16 @@ public class TetronimoLinkedList {
 
         size++;
     }
+
+    /**
+     * Advance head to next node in circle
+     * @return new head node
+     */
+    public Node getNextHead() {
+        head = head.next;
+        return head;
+    }
+
     private class Node {
         private Tetronimo data;
         private Node next;
