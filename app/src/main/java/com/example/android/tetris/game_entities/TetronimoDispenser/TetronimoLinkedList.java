@@ -17,6 +17,10 @@ public class TetronimoLinkedList {
         size = 0;
     }
 
+    public Node getHead() {return head;}
+
+    public int getSize() {return size;}
+
     public void insertNode(Node insertNode) {
 
         if(head == null) {
