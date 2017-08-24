@@ -9,6 +9,7 @@ import com.example.android.tetris.game_entities.Tetronimoes.StraightTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.TTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.Tetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.ZTetronimo;
+import com.example.android.tetris.game_entities.TetronimoDispenser.TetronimoLinkedList.Node;
 
 import java.util.Random;
 
@@ -83,5 +84,13 @@ public class TetronimoDispenser {
 
             default : {throw new UnsupportedOperationException("Tetronimo type not recognized");}
         }
+    }
+
+    public Tetronimo dispense() {
+        Node oldHead = mTetronimoList.getHead();
+        oldHead.setData(generateRandomTetronimo());
+
+        Node newHead = mTetronimoList.getNextHead();
+        return newHead.getData();
     }
 }

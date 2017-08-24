@@ -55,14 +55,9 @@ public class TetronimoLinkedList {
         return head;
     }
 
-    private class Node {
+    protected class Node {
         private Tetronimo data;
         private Node next;
-
-        public Node(Tetronimo data, Node next) {
-            this.data = data;
-            this.next = next;
-        }
 
         Node() {
             data = null;
