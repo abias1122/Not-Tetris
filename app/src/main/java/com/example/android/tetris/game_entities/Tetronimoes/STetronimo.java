@@ -346,4 +346,9 @@ public class STetronimo extends Tetronimo {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "S";
+    }
 }

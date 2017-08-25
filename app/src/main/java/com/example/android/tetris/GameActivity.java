@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.game_entities.GridCellView;
+import com.example.android.tetris.game_entities.TetronimoDispenser.TetronimoDispenser;
 import com.example.android.tetris.game_entities.Tetronimoes.LTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.ReverseLTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.STetronimo;
@@ -28,8 +29,8 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private Handler mMoveDownHandler;
     private GestureDetectorCompat mGestureDetector;
 
-    //temporary until I create tetronimo generator
-    Tetronimo debugTetronimo;
+    private TetronimoDispenser mDispenser;
+    private Tetronimo tetronimoInPlay;
 
     private float mInitY;
     private float mInitX;
@@ -49,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
         mGameboard = (GridLayout) findViewById(R.id.gameboard);
         mGestureDetector = new GestureDetectorCompat(this, this);
+
         delay = DEFAULT_DELAY;
         mGameboard.setColumnCount(NUM_COLS);
         mGameboard.setRowCount(NUM_ROWS);
@@ -61,6 +63,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                 mGameboard.addView(newGridCell);
             }
         }
+        mDispenser = new TetronimoDispenser(mGridCellsViews);
 
         mGameboard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -89,12 +92,19 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-        debugTetronimo = new StraightTetronimo(mGridCellsViews);
+        tetronimoInPlay = mDispenser.dispense();
+        tetronimoInPlay.putInGame();
+        
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                debugTetronimo.moveDown();
+                boolean canMove = tetronimoInPlay.moveDown();
+                if(!canMove) {
+                    tetronimoInPlay = null;
+                    tetronimoInPlay = mDispenser.dispense();
+                    tetronimoInPlay.putInGame();
+                }
                 mMoveDownHandler.postDelayed(this, delay);
             }
         }, delay);
@@ -126,7 +136,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            debugTetronimo.moveLeft();
+                            tetronimoInPlay.moveLeft();
                         }
                     });
                 }
@@ -139,7 +149,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            debugTetronimo.moveRight();
+                            tetronimoInPlay.moveRight();
                         }
                     });
                 }
@@ -192,7 +202,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                debugTetronimo.rotate();
+                tetronimoInPlay.rotate();
             }
         });
         Log.d(DEBUG_TAG, "rotate");
@@ -220,7 +230,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    debugTetronimo.moveToBottom();
+                    tetronimoInPlay.moveToBottom();
                 }
             });
             Log.d(DEBUG_TAG, "SWIPE DOWN!");

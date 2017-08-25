@@ -346,4 +346,9 @@ public class ZTetronimo extends Tetronimo {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Z";
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.android.tetris.game_entities.TetronimoDispenser;
 
+import android.util.Log;
+
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.Tetronimoes.LTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.ReverseLTetronimo;
@@ -38,7 +40,7 @@ public class TetronimoDispenser {
 
         public static TetronimoType getTetronimoType (int val) {
             for(TetronimoType t : TetronimoType.values()) {
-                if(t.val == val) {
+                if(t.getVal() == val) {
                     return t;
                 }
             }
@@ -54,9 +56,18 @@ public class TetronimoDispenser {
     public TetronimoDispenser(GridCellView[] gameGridCells) {
 
         mGameGridCells = gameGridCells;
+        mTetronimoList = new TetronimoLinkedList();
 
         for(int i = 0; i < NUM_OF_TETRONIMOES; i++) {
-            mTetronimoList.insertNode(generateRandomTetronimo());
+
+            Tetronimo tetronimo = generateRandomTetronimo();
+            mTetronimoList.insertNode(tetronimo);
+        }
+
+        Node printNode = mTetronimoList.getHead();
+        for(int i = 0; i < NUM_OF_TETRONIMOES; i++) {
+            Tetronimo printTetron = printNode.getData();
+            Log.i("Initialize list", printTetron.toString());
         }
     }
 
@@ -82,13 +93,16 @@ public class TetronimoDispenser {
 
             case REVERSE_L : {return new ReverseLTetronimo(mGameGridCells);}
 
-            default : {throw new UnsupportedOperationException("Tetronimo type not recognized");}
+            default : {
+                throw new UnsupportedOperationException("Tetronimo type not recognized");}
         }
     }
 
     public Tetronimo dispense() {
+
         Node oldHead = mTetronimoList.getHead();
-        oldHead.setData(generateRandomTetronimo());
+        Tetronimo data = generateRandomTetronimo();
+        oldHead.setData(data);
 
         Node newHead = mTetronimoList.getNextHead();
         return newHead.getData();

@@ -24,4 +24,9 @@ public class SquareTetronimo extends Tetronimo {
         //rotating a square 90 degrees doesn't change appearance
         return;
     }
+
+    @Override
+    public String toString() {
+        return "Square";
+    }
 }

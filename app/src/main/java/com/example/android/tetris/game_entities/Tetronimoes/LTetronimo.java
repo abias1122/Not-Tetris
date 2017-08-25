@@ -392,4 +392,9 @@ public class LTetronimo extends Tetronimo {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "L";
+    }
 }

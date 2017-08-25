@@ -273,4 +273,9 @@ public class TTetronimo extends Tetronimo {
 
         Log.i(TAG, "========DONE ROTATE=======");
     }
+
+    @Override
+    public String toString() {
+        return "T";
+    }
 }

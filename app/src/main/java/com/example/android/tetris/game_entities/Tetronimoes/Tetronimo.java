@@ -48,12 +48,17 @@ public abstract class Tetronimo {
             int cellYPos = xAndYPositions[1];
 
             mComponentCells[i] = mGameGridCells[(cellYPos * NUM_COLS) + cellXPos];
-            mComponentCells[i].setOccupied(true);
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
         }
 
         mAnchorCell = mComponentCells[anchorCellIndex];
         mCurrentState = RotState.ZERO_DEG;
+    }
+
+    public void putInGame() {
+        for(int i = 0; i < mComponentCells.length; i++) {
+            mComponentCells[i].setOccupied(true);
+            mComponentCells[i].setImageResource(DRAWABLE_ID);
+        }
     }
 
     /**

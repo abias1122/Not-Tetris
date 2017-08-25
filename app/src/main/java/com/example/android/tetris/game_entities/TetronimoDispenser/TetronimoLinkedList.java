@@ -1,5 +1,7 @@
 package com.example.android.tetris.game_entities.TetronimoDispenser;
 
+import android.util.Log;
+
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.Tetronimoes.Tetronimo;
 
@@ -44,6 +46,7 @@ public class TetronimoLinkedList {
         }
 
         size++;
+        Log.i("DISPENSER", "size = " + size);
     }
 
     /**

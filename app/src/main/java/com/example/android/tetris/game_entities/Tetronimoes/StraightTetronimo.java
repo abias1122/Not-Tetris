@@ -401,4 +401,9 @@ public class StraightTetronimo extends Tetronimo {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Straight";
+    }
 }
