@@ -94,7 +94,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
         tetronimoInPlay = mDispenser.dispense();
         tetronimoInPlay.putInGame();
-        
+
         mMoveDownHandler = new Handler();
         mMoveDownHandler.postDelayed(new Runnable() {
             @Override
@@ -231,6 +231,9 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
                 @Override
                 public void run() {
                     tetronimoInPlay.moveToBottom();
+                    tetronimoInPlay = null;
+                    tetronimoInPlay = mDispenser.dispense();
+                    tetronimoInPlay.putInGame();
                 }
             });
             Log.d(DEBUG_TAG, "SWIPE DOWN!");
