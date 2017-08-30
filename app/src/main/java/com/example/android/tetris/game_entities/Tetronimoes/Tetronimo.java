@@ -12,20 +12,20 @@ import com.example.android.tetris.game_entities.GridCellView;
 
 public abstract class Tetronimo {
 
-    protected final int NUM_COLS = 10;
-    protected final int NUM_ROWS = 24;
-    protected final int DRAWABLE_ID;
-    protected final String TAG = "Tetronimo";
+    final int NUM_COLS = 10;
+    final int NUM_ROWS = 24;
+    final int DRAWABLE_ID;
+    final String TAG = "Tetronimo";
 
-    protected GridCellView[] mComponentCells;
-    protected GridCellView[] mGameGridCells;
-    protected GridCellView mAnchorCell;
+    GridCellView[] mComponentCells;
+    GridCellView[] mGameGridCells;
+    GridCellView mAnchorCell;
 
-    protected enum RotState {
+    enum RotState {
         ZERO_DEG, NINETY_DEG,
         ONE_EIGHTY_DEG, TWO_SEVENTY_DEG;
     }
-    protected RotState mCurrentState;
+    RotState mCurrentState;
 
     /**
      * Called from subclass constructors
@@ -119,12 +119,7 @@ public abstract class Tetronimo {
         for(int i = 0; i < mComponentCells.length; i++) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
-            mComponentCells[i].setImageResource(android.R.color.transparent);
-            mComponentCells[i].setOccupied(false);
-
-            mComponentCells[i] = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
-            mComponentCells[i].setOccupied(true);
+            moveComponentToCell(i, xPos, yPos + 1);
         }
 
         return true;
@@ -255,7 +250,7 @@ public abstract class Tetronimo {
      * Move tetronimo to lowest available position directly beneath it
      */
     public void moveToBottom() {
-
+        //TODO: Fix defect
         sortComponentGridCellsByYPos();
         int rowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
         int lowestRowInTetron = mComponentCells[0].getYPos();
@@ -315,6 +310,16 @@ public abstract class Tetronimo {
         }
 
         return yPos;
+    }
+
+    protected void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
+
+        mComponentCells[componentIndex].setImageResource(android.R.color.transparent);
+        mComponentCells[componentIndex].setOccupied(false);
+
+        mComponentCells[componentIndex] = mGameGridCells[(newYPos * NUM_COLS) + newXPos];
+        mComponentCells[componentIndex].setImageResource(DRAWABLE_ID);
+        mComponentCells[componentIndex].setOccupied(true);
     }
 
     /**

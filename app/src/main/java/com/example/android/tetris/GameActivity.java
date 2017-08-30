@@ -198,7 +198,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent) {
-        //TODO: Call rotate on provided tetron once implemented
+
         new Handler().post(new Runnable() {
             @Override
             public void run() {
