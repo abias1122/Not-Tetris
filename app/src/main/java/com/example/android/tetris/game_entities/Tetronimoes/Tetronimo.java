@@ -167,12 +167,7 @@ public abstract class Tetronimo {
         for(int i = 0; i < mComponentCells.length; i++) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
-            mComponentCells[i].setImageResource(android.R.color.transparent);
-            mComponentCells[i].setOccupied(false);
-
-            mComponentCells[i] = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
-            mComponentCells[i].setOccupied(true);
+            moveComponentToCell(i, xPos - 1, yPos);
         }
 
         //move anchor left by 1 to keep up with component cells
@@ -227,12 +222,7 @@ public abstract class Tetronimo {
         for (int i = mComponentCells.length - 1; i >= 0; i--) {
             xPos = mComponentCells[i].getXPos();
             yPos = mComponentCells[i].getYPos();
-            mComponentCells[i].setImageResource(android.R.color.transparent);
-            mComponentCells[i].setOccupied(false);
-
-            mComponentCells[i] = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
-            mComponentCells[i].setOccupied(true);
+            moveComponentToCell(i, xPos + 1, yPos);
         }
 
         //move anchor cell right by 1 to keep up with component cells
@@ -280,12 +270,7 @@ public abstract class Tetronimo {
                 mAnchorCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
             }
 
-            mComponentCells[i].setImageResource(android.R.color.transparent);
-            mComponentCells[i].setOccupied(false);
-
-            mComponentCells[i] = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
-            mComponentCells[i].setOccupied(true);
+            moveComponentToCell(i, xPos, rowToFallTo);
         }
     }
 
