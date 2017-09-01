@@ -55,57 +55,95 @@ public class ZTetronimo extends Tetronimo {
 
                         //cell is diagonally bottom right of anchor cell
                         if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos, anchorYPos - 1);
                         }
 
                         //cell is directly below anchor cell
                         if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
                         }
                     }
                 }
-                //TODO: handle unusual rotations
-//                else {
-//                    for(int i = 0; i < mComponentCells.length; i++) {
-//
-//                        componentXPos = mComponentCells[i].getXPos();
-//
-//                        //cell is directly left of anchor cell
-//                        if(componentXPos == (anchorXPos - 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//
-//                        //cell is directly right of anchor cell
-//                        if(componentXPos == (anchorXPos + 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//                    }
-//
-//                    mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-//                    Log.i(TAG, "ANCHOR CHANGED");
-//                    Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-//                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
-//                }
+                else {
+                    if(anchorYPos < (NUM_ROWS - 2) &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 2) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is diagonally bottom right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
+                            }
+
+                            //cell is directly left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos + 2);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorYPos > 0 &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is diagonally bottom right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
+                            }
+
+                            //cell is directly left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorYPos < (NUM_ROWS - 2) &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 2) * NUM_COLS) + anchorXPos].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is anchor cell
+                            if(mComponentCells[i].equals(mAnchorCell)) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos);
+                            }
+
+                            //cell is directly left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos + 2);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else {
+                        break;
+                    }
+                }
 
                 mCurrentState = RotState.NINETY_DEG;
                 break;
@@ -133,58 +171,97 @@ public class ZTetronimo extends Tetronimo {
 
                         //cell is diagonally bottom left of anchor cell
                         if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos + 1, anchorYPos);
                         }
 
                         //cell is directly left of anchor cell
                         if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
                         }
                     }
                 }
                 //TODO: handle unusual rotations
-//                else {
-//                    for(int i = 0; i < mComponentCells.length; i++) {
-//
-//                        componentXPos = mComponentCells[i].getXPos();
-//
-//                        //cell is directly left of anchor cell
-//                        if(componentXPos == (anchorXPos - 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//
-//                        //cell is directly right of anchor cell
-//                        if(componentXPos == (anchorXPos + 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//                    }
-//
-//                    mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-//                    Log.i(TAG, "ANCHOR CHANGED");
-//                    Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-//                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
-//                }
 
+                else {
+                    if(anchorXPos > 1 &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 2)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is directly above anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
+                            }
+
+                            //cell is bottom left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos - 2, anchorYPos - 1);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorXPos > 1 &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 2)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is directly above anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos + 1);
+                            }
+
+                            //cell is anchor cell
+                            if(mComponentCells[i].equals(mAnchorCell)) {
+                                moveComponentToCell(i, anchorXPos - 2, anchorYPos);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorXPos < (NUM_COLS - 1) &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is directly above anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos + 1);
+                            }
+
+                            //cell is bottom left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else {
+                        break;
+                    }
+                }
                 mCurrentState = RotState.ONE_EIGHTY_DEG;
                 break;
             }
@@ -211,57 +288,95 @@ public class ZTetronimo extends Tetronimo {
 
                         //cell is diagonally top left of anchor cell
                         if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos, anchorYPos + 1);
                         }
 
                         //cell is directly above anchor cell
                         if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
                         }
                     }
                 }
-                //TODO: handle unusual rotations
-//                else {
-//                    for(int i = 0; i < mComponentCells.length; i++) {
-//
-//                        componentXPos = mComponentCells[i].getXPos();
-//
-//                        //cell is directly left of anchor cell
-//                        if(componentXPos == (anchorXPos - 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//
-//                        //cell is directly right of anchor cell
-//                        if(componentXPos == (anchorXPos + 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//                    }
-//
-//                    mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-//                    Log.i(TAG, "ANCHOR CHANGED");
-//                    Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-//                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
-//                }
+                else {
+                    if(anchorYPos > 1 &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is top left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
+                            }
+
+                            //cell is right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 2);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorYPos > 1 &&
+                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos].getOccupied() &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is anchor cell
+                            if(mComponentCells[i].equals(mAnchorCell)) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos - 2);
+                            }
+
+                            //cell is right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorYPos < (NUM_ROWS - 1) &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is top left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
+                            }
+
+                            //cell is right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else {
+                        break;
+                    }
+                }
 
                 mCurrentState = RotState.TWO_SEVENTY_DEG;
                 break;
@@ -289,57 +404,95 @@ public class ZTetronimo extends Tetronimo {
 
                         //cell is diagonally top right of anchor cell
                         if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos - 1, anchorYPos);
                         }
 
                         //cell is directly right of anchor cell
                         if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
-                            mComponentCells[i].setImageResource(android.R.color.transparent);
-                            mComponentCells[i].setOccupied(false);
-
-                            mComponentCells[i] = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)];
-                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-                            mComponentCells[i].setOccupied(true);
+                            moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
                         }
                     }
                 }
-                //TODO: handle unusual rotations
-//                else {
-//                    for(int i = 0; i < mComponentCells.length; i++) {
-//
-//                        componentXPos = mComponentCells[i].getXPos();
-//
-//                        //cell is directly left of anchor cell
-//                        if(componentXPos == (anchorXPos - 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//
-//                        //cell is directly right of anchor cell
-//                        if(componentXPos == (anchorXPos + 1)) {
-//                            mComponentCells[i].setImageResource(android.R.color.transparent);
-//                            mComponentCells[i].setOccupied(false);
-//
-//                            mComponentCells[i] = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-//                            mComponentCells[i].setImageResource(DRAWABLE_ID);
-//                            mComponentCells[i].setOccupied(true);
-//                        }
-//                    }
-//
-//                    mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-//                    Log.i(TAG, "ANCHOR CHANGED");
-//                    Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-//                    Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
-//                }
+                else {
+                    if(anchorXPos < (NUM_COLS - 2) &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 2)].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is top right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
+                            }
+
+                            //cell is directly below anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos + 2, anchorYPos + 1);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorXPos < (NUM_COLS - 2) &&
+                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 2)].getOccupied() &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is anchor cell
+                            if(mComponentCells[i].equals(mAnchorCell)) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos - 1);
+                            }
+
+                            //cell is directly below anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos + 2, anchorYPos);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else if(anchorXPos > 0 &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied() &&
+                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos - 1].getOccupied()) {
+
+                        for(int i = 0; i < mComponentCells.length; i++) {
+
+                            componentXPos = mComponentCells[i].getXPos();
+                            componentYPos = mComponentCells[i].getYPos();
+
+                            //cell is  top right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
+                                moveComponentToCell(i, anchorXPos, anchorYPos - 1);
+                            }
+
+                            //cell is directly below anchor cell
+                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
+                            }
+                        }
+
+                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
+                        Log.i(TAG, "ANCHOR CHANGED");
+                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
+                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                    }
+                    else {
+                        break;
+                    }
+                }
 
                 mCurrentState = RotState.ZERO_DEG;
                 break;

@@ -270,7 +270,6 @@ public class TTetronimo extends Tetronimo {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
-                            componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
                             //cell is anchor cell
@@ -377,7 +376,6 @@ public class TTetronimo extends Tetronimo {
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
 
                             //cell is anchor cell
                             if(mComponentCells[i].equals(mAnchorCell)) {

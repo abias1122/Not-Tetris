@@ -19,6 +19,7 @@ public abstract class Tetronimo {
 
     GridCellView[] mComponentCells;
     GridCellView[] mGameGridCells;
+    //TODO: Refactor mAnchorCell to mAxisCell
     GridCellView mAnchorCell;
 
     enum RotState {
