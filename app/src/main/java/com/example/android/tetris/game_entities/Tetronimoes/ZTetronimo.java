@@ -22,9 +22,7 @@ public class ZTetronimo extends Tetronimo {
 
     @Override
     public void rotate() {
-        //TODO: Handle weird edge cases
-        //There is no code to handle if the non-normal
-        //rotations also go into occupied cells
+
         boolean useNormalRotate = true;
         int anchorXPos = mAnchorCell.getXPos();
         int anchorYPos = mAnchorCell.getYPos();
@@ -180,7 +178,6 @@ public class ZTetronimo extends Tetronimo {
                         }
                     }
                 }
-                //TODO: handle unusual rotations
 
                 else {
                     if(anchorXPos > 1 &&
