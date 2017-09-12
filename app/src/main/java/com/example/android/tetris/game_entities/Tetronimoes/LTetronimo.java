@@ -281,7 +281,7 @@ public class LTetronimo extends Tetronimo {
                     if (anchorYPos > 1 &&
                             !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied() &&
                             !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -298,9 +298,9 @@ public class LTetronimo extends Tetronimo {
                                 moveComponentToCell(i, anchorXPos, anchorYPos - 2);
                             }
 
-                            //cell is directly top left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 2);
+                            //cell is diagonally bottom left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
+                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 2);
                             }
                         }
 
@@ -318,13 +318,13 @@ public class LTetronimo extends Tetronimo {
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
+                            //cell is directly right of anchor cell
+                            if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
                                 moveComponentToCell(i, anchorXPos, anchorYPos + 2);
                             }
 
-                            //cell is directly top left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
+                            //cell is diagonally bottom left of anchor cell
+                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
                                 moveComponentToCell(i, anchorXPos, anchorYPos + 1);
                             }
                         }
