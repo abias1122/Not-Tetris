@@ -19,7 +19,6 @@ public abstract class Tetronimo {
 
     GridCellView[] mComponentCells;
     GridCellView[] mGameGridCells;
-    //TODO: Refactor mAxisCell to mAxisCell
     GridCellView mAxisCell;
 
     enum RotState {
@@ -220,45 +219,68 @@ public abstract class Tetronimo {
     public void moveToBottom() {
         //TODO: Fix defect
         sortComponentGridCellsByYPos();
-        int rowToFallTo = getLowestFreeRowBeneathCell(mComponentCells[0]);
-        int lowestRowInTetron = mComponentCells[0].getYPos();
+        int highestLowRow = getLowestFreeCellBeneathCell(mComponentCells[0]).getYPos();
+        GridCellView anchorCell = mComponentCells[0];
         
         for(int i = 1; i < mComponentCells.length; i++) {
-            if(mComponentCells[i].getYPos() < lowestRowInTetron) {
-                continue;
-            }
 
-            int row = getLowestFreeRowBeneathCell(mComponentCells[i]);
-            if(row < rowToFallTo) {
-                rowToFallTo = row;
+            GridCellView cell = getLowestFreeCellBeneathCell(mComponentCells[i]);
+            if(cell.getYPos() < highestLowRow && !isComponentCell(cell)) {
+                highestLowRow = cell.getYPos();
+                anchorCell = mComponentCells[i];
             }
         }
 
-        int yPosToUse = mComponentCells[0].getYPos();
-        int xPos;
         for(int i = 0; i < mComponentCells.length; i++) {
-
-            xPos = mComponentCells[i].getXPos();
-            if(mComponentCells[i].getYPos() < yPosToUse) {
-                yPosToUse = mComponentCells[i].getYPos();
-                rowToFallTo--;
-            }
-
-            if(mComponentCells[i].equals(mAxisCell)) {
-                mAxisCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
-            }
-
-            moveComponentToCell(i, xPos, rowToFallTo);
+            int yPosDifference = anchorCell.getYPos() - mComponentCells[i].getYPos();
+            int newYPos = highestLowRow - yPosDifference;
+            int xPos = mComponentCells[i].getXPos();
+            moveComponentToCell(i, xPos, newYPos);
         }
+
+//        int yPosToUse = mComponentCells[0].getYPos();
+//        int xPos;
+//        for(int i = 0; i < mComponentCells.length; i++) {
+//
+//            xPos = mComponentCells[i].getXPos();
+//            if(mComponentCells[i].getYPos() < yPosToUse) {
+//                yPosToUse = mComponentCells[i].getYPos();
+//                rowToFallTo--;
+//            }
+//
+//            if(mComponentCells[i].equals(mAxisCell)) {
+//                mAxisCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
+//            }
+//
+//            moveComponentToCell(i, xPos, rowToFallTo);
+//        }
     }
 
+    /**
+     * Determine if a given GridCellView object is an one of the
+     * tetronimo's component cells
+     *
+     * @param gridCell cell to check
+     * @return true if gridCell is a component cell, false otherwise
+     */
+    private boolean isComponentCell(GridCellView gridCell) {
+        for(GridCellView component : mComponentCells) {
+            if(gridCell.equals(component)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //TODO: Fix Documentation
     /**
      *
      * @param gridCell
      * @return lowest free row below gridCell. Returns gridCell's
      * current yPos if there is an occupied cell directly beneath
      */
-    private int getLowestFreeRowBeneathCell(GridCellView gridCell) {
+    private GridCellView getLowestFreeCellBeneathCell(GridCellView gridCell) {
         int yPos = gridCell.getYPos();
         int xPos = gridCell.getXPos();
         boolean lowerCellExists = yPos < NUM_ROWS - 1;
@@ -272,7 +294,7 @@ public abstract class Tetronimo {
             lowerCellExists = yPos < NUM_ROWS - 1;
         }
 
-        return yPos;
+        return mGameGridCells[(yPos * NUM_COLS) + xPos];
     }
 
     protected void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
