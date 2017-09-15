@@ -24,21 +24,18 @@ public class STetronimo extends Tetronimo {
     public void rotate() {
 
         boolean useNormalRotate = true;
-        int anchorXPos = mAnchorCell.getXPos();
-        int anchorYPos = mAnchorCell.getYPos();
+        int axisXPos = mAxisCell.getXPos();
+        int axisYPos = mAxisCell.getYPos();
         Log.i(TAG, "=========IN ROTATE=========");
-        Log.i(TAG, "anchorCell xPos: " + anchorXPos);
-        Log.i(TAG, "anchorCell yPos: " + anchorYPos);
+        Log.i(TAG, "axisCell xPos: " + axisXPos);
+        Log.i(TAG, "axisCell yPos: " + axisYPos);
 
         switch (mCurrentState) {
             case ZERO_DEG: {
-                if(anchorYPos == 0 ||
-                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() ||
-                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                if(axisYPos == 0 ||
+                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)].getOccupied() ||
+                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
                     useNormalRotate = false;
-
-                    //this logging causes crash if tetronimo is at the bottom of the screen
-                    //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
                 int componentXPos;
@@ -51,92 +48,92 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally bottom left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
-                            moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
+                        //cell is diagonally bottom left of axis cell
+                        if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
+                            moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
                         }
 
-                        //cell is directly right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
-                            moveComponentToCell(i, anchorXPos - 1, anchorYPos);
+                        //cell is directly right of axis cell
+                        if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
+                            moveComponentToCell(i, axisXPos - 1, axisYPos);
                         }
                     }
                 }
                 else {
-                    if(anchorYPos < (NUM_ROWS - 2) &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 2) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                    if(axisYPos < (NUM_ROWS - 2) &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 2) * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly right of anchor cell
-                            if(componentYPos == anchorYPos && componentXPos == (anchorXPos + 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
+                            //cell is directly right of axis cell
+                            if(componentYPos == axisYPos && componentXPos == (axisXPos + 1)) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
                             }
 
-                            //cell is directly bottom left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos + 2);
+                            //cell is directly bottom left of axis cell
+                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos + 2);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorYPos < (NUM_ROWS - 2) &&
-                            !mGameGridCells[((anchorYPos + 2) * NUM_COLS) + anchorXPos].getOccupied() &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                    else if (axisYPos < (NUM_ROWS - 2) &&
+                            !mGameGridCells[((axisYPos + 2) * NUM_COLS) + axisXPos].getOccupied() &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly right of anchor cell
-                            if(componentYPos == anchorYPos && componentXPos == (anchorXPos + 1)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos + 2);
+                            //cell is directly right of axis cell
+                            if(componentYPos == axisYPos && componentXPos == (axisXPos + 1)) {
+                                moveComponentToCell(i, axisXPos, axisYPos + 2);
                             }
 
-                            //cell is anchor cell
-                            if(mComponentCells[i].equals(mAnchorCell)) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos);
+                            //cell is axis cell
+                            if(mComponentCells[i].equals(mAxisCell)) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorYPos > 1 &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                    else if (axisYPos > 1 &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly below anchor cell
-                            if(componentYPos == (anchorYPos + 1) && componentXPos == anchorXPos) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
+                            //cell is directly below axis cell
+                            if(componentYPos == (axisYPos + 1) && componentXPos == axisXPos) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
                             }
 
-                            //cell is directly bottom left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos + 1)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos - 1);
+                            //cell is directly bottom left of axis cell
+                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
+                                moveComponentToCell(i, axisXPos, axisYPos - 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     //no rotate
                     else {
@@ -149,13 +146,10 @@ public class STetronimo extends Tetronimo {
             }
 
             case NINETY_DEG: {
-                if(anchorXPos == (NUM_COLS - 1) ||
-                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied() ||
-                        mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                if(axisXPos == (NUM_COLS - 1) ||
+                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() ||
+                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied()) {
                     useNormalRotate = false;
-
-                    //this logging causes crash if tetronimo is at the bottom of the screen
-                    //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
                 int componentXPos;
@@ -168,92 +162,92 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally top left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
-                            moveComponentToCell(i, anchorXPos, anchorYPos - 1);
+                        //cell is diagonally top left of axis cell
+                        if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
+                            moveComponentToCell(i, axisXPos, axisYPos - 1);
                         }
 
-                        //cell is directly below anchor cell
-                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos + 1)) {
-                            moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
+                        //cell is directly below axis cell
+                        if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
+                            moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
                         }
                     }
                 }
                 else {
-                    if (anchorXPos > 1 &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 2)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                    if (axisXPos > 1 &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 2)].getOccupied() &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly below anchor cell
-                            if(componentYPos == (anchorYPos + 1) && componentXPos == anchorXPos) {
-                                moveComponentToCell(i, anchorXPos - 2, anchorYPos);
+                            //cell is directly below axis cell
+                            if(componentYPos == (axisYPos + 1) && componentXPos == axisXPos) {
+                                moveComponentToCell(i, axisXPos - 2, axisYPos);
                             }
 
-                            //cell is anchor cell
-                            if(mComponentCells[i].equals(mAnchorCell)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos - 1);
+                            //cell is axis cell
+                            if(mComponentCells[i].equals(mAxisCell)) {
+                                moveComponentToCell(i, axisXPos, axisYPos - 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorXPos > 1 &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 2)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                    else if (axisXPos > 1 &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 2)].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly below anchor cell
-                            if(componentYPos == (anchorYPos + 1) && componentXPos == anchorXPos) {
-                                moveComponentToCell(i, anchorXPos - 2, anchorYPos + 1);
+                            //cell is directly below axis cell
+                            if(componentYPos == (axisYPos + 1) && componentXPos == axisXPos) {
+                                moveComponentToCell(i, axisXPos - 2, axisYPos + 1);
                             }
 
-                            //cell is above left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
+                            //cell is above left of axis cell
+                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorXPos < (NUM_COLS - 1) &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                    else if (axisXPos < (NUM_COLS - 1) &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly left anchor cell
-                            if(componentYPos == anchorYPos && componentXPos == (anchorXPos - 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos);
+                            //cell is directly left axis cell
+                            if(componentYPos == axisYPos && componentXPos == (axisXPos - 1)) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos);
                             }
 
-                            //cell is above left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
+                            //cell is above left of axis cell
+                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     //no rotate
                     else {
@@ -266,13 +260,10 @@ public class STetronimo extends Tetronimo {
             }
 
             case ONE_EIGHTY_DEG: {
-                if(anchorYPos == (NUM_ROWS - 1) ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() ||
-                        mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                if(axisYPos == (NUM_ROWS - 1) ||
+                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)].getOccupied() ||
+                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
                     useNormalRotate = false;
-
-                    //this logging causes crash if tetronimo is at the bottom of the screen
-                    //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
                 int componentXPos;
@@ -285,92 +276,92 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally top right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
-                            moveComponentToCell(i, anchorXPos + 1, anchorYPos);
+                        //cell is diagonally top right of axis cell
+                        if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
+                            moveComponentToCell(i, axisXPos + 1, axisYPos);
                         }
 
-                        //cell is directly left of anchor cell
-                        if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
-                            moveComponentToCell(i, anchorXPos + 1, anchorYPos + 1);
+                        //cell is directly left of axis cell
+                        if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
+                            moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
                         }
                     }
                 }
                 else {
-                    if (anchorYPos > 1 &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                    if (axisYPos > 1 &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos - 2) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly left anchor cell
-                            if(componentYPos == anchorYPos && componentXPos == (anchorXPos - 1)) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
+                            //cell is directly left axis cell
+                            if(componentYPos == axisYPos && componentXPos == (axisXPos - 1)) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
                             }
 
-                            //cell is above right of anchor cell
-                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 2);
+                            //cell is above right of axis cell
+                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos - 2);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorYPos < (NUM_ROWS - 1) &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                    else if (axisYPos < (NUM_ROWS - 1) &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly above anchor cell
-                            if(componentYPos == (anchorYPos - 1) && componentXPos == anchorXPos) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos - 1);
+                            //cell is directly above axis cell
+                            if(componentYPos == (axisYPos - 1) && componentXPos == axisXPos) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
                             }
 
-                            //cell is above right of anchor cell
-                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos + 1);
+                            //cell is above right of axis cell
+                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos, axisYPos + 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorYPos > 1 &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 2) * NUM_COLS) + anchorXPos].getOccupied()) {
+                    else if (axisYPos > 1 &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos - 2) * NUM_COLS) + axisXPos].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is anchor cell
-                            if(mComponentCells[i].equals(mAnchorCell)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos - 2);
+                            //cell is axis cell
+                            if(mComponentCells[i].equals(mAxisCell)) {
+                                moveComponentToCell(i, axisXPos, axisYPos - 2);
                             }
 
-                            //cell is directly left of anchor cell
-                            if(componentXPos == (anchorXPos - 1) && componentYPos == anchorYPos) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos);
+                            //cell is directly left of axis cell
+                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     //no rotate
                     else {
@@ -383,13 +374,10 @@ public class STetronimo extends Tetronimo {
             }
 
             case TWO_SEVENTY_DEG: {
-                if(anchorXPos == 0 ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied() ||
-                        mGameGridCells[((anchorYPos + 1) * NUM_COLS) + (anchorXPos - 1)].getOccupied()) {
+                if(axisXPos == 0 ||
+                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied() ||
+                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
                     useNormalRotate = false;
-
-                    //this logging causes crash if tetronimo is at the bottom of the screen
-                    //Log.i(TAG, "Cell below anchor occupied: " + mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied());
                 }
 
                 int componentXPos;
@@ -402,92 +390,92 @@ public class STetronimo extends Tetronimo {
                         componentXPos = mComponentCells[i].getXPos();
                         componentYPos = mComponentCells[i].getYPos();
 
-                        //cell is diagonally bottom right of anchor cell
-                        if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
-                            moveComponentToCell(i, anchorXPos - 1, anchorYPos + 1);
+                        //cell is diagonally bottom right of axis cell
+                        if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
+                            moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
                         }
 
-                        //cell is directly above anchor cell
-                        if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
-                            moveComponentToCell(i, anchorXPos, anchorYPos + 1);
+                        //cell is directly above axis cell
+                        if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
+                            moveComponentToCell(i, axisXPos, axisYPos + 1);
                         }
                     }
                 }
                 else {
-                    if (anchorXPos < (NUM_COLS - 2) &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 2)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos].getOccupied()) {
+                    if (axisXPos < (NUM_COLS - 2) &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 2)].getOccupied() &&
+                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is directly above anchor cell
-                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos + 2, anchorYPos);
+                            //cell is directly above axis cell
+                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos + 2, axisYPos);
                             }
 
-                            //cell is anchor cell
-                            if(mComponentCells[i].equals(mAnchorCell)) {
-                                moveComponentToCell(i, anchorXPos, anchorYPos + 1);
+                            //cell is axis cell
+                            if(mComponentCells[i].equals(mAxisCell)) {
+                                moveComponentToCell(i, axisXPos, axisYPos + 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else if (anchorXPos > 0 &&
-                            !mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied()) {
+                    else if (axisXPos > 0 &&
+                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is bottom right of anchor cell
-                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
+                            //cell is bottom right of axis cell
+                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
                             }
 
-                            //cell is  directly right anchor cell
-                            if(componentXPos == (anchorXPos + 1) && componentYPos == anchorYPos) {
-                                moveComponentToCell(i, anchorXPos - 1, anchorYPos);
+                            //cell is  directly right axis cell
+                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
+                                moveComponentToCell(i, axisXPos - 1, axisYPos);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + anchorXPos];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
-                    else  if (anchorXPos < (NUM_COLS - 2) &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)].getOccupied() &&
-                            !mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 2)].getOccupied()) {
+                    else  if (axisXPos < (NUM_COLS - 2) &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 1)].getOccupied() &&
+                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 2)].getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
                             componentXPos = mComponentCells[i].getXPos();
                             componentYPos = mComponentCells[i].getYPos();
 
-                            //cell is bottom right of anchor cell
-                            if(componentXPos == (anchorXPos + 1) && componentYPos == (anchorYPos + 1)) {
-                                moveComponentToCell(i, anchorXPos + 2, anchorYPos - 1);
+                            //cell is bottom right of axis cell
+                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
+                                moveComponentToCell(i, axisXPos + 2, axisYPos - 1);
                             }
 
-                            //cell is  directly above anchor cell
-                            if(componentXPos == anchorXPos && componentYPos == (anchorYPos - 1)) {
-                                moveComponentToCell(i, anchorXPos + 1, anchorYPos - 1);
+                            //cell is  directly above axis cell
+                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
+                                moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
                             }
                         }
 
-                        mAnchorCell = mGameGridCells[((anchorYPos - 1) * NUM_COLS) + (anchorXPos + 1)];
-                        Log.i(TAG, "ANCHOR CHANGED");
-                        Log.i(TAG, "anchorXPos: " + mAnchorCell.getXPos());
-                        Log.i(TAG, "anchorYPos: " + mAnchorCell.getYPos());
+                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 1)];
+                        Log.i(TAG, "AXIS CHANGED");
+                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     //no rotate
                     else {

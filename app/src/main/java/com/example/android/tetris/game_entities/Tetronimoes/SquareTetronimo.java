@@ -20,10 +20,7 @@ public class SquareTetronimo extends Tetronimo {
     }
 
     @Override
-    public void rotate() {
-        //rotating a square 90 degrees doesn't change appearance
-        return;
-    }
+    public void rotate() {/*rotating a square 90 degrees doesn't change appearance*/}
 
     @Override
     public String toString() {

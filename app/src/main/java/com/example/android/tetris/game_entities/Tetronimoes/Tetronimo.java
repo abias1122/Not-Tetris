@@ -19,8 +19,8 @@ public abstract class Tetronimo {
 
     GridCellView[] mComponentCells;
     GridCellView[] mGameGridCells;
-    //TODO: Refactor mAnchorCell to mAxisCell
-    GridCellView mAnchorCell;
+    //TODO: Refactor mAxisCell to mAxisCell
+    GridCellView mAxisCell;
 
     enum RotState {
         ZERO_DEG, NINETY_DEG,
@@ -33,9 +33,9 @@ public abstract class Tetronimo {
      * @param gameGridCells the grid cells being used in the current game
      * @param initialPositions starting X and Y positions for component cells
      * @param drawableId drawable to be used when occupying a cell
-     * @param anchorCellIndex index of the anchor cell's X and Y positions in initialPositions
+     * @param axisCellIndex index of the axis cell's X and Y positions in initialPositions
      */
-    public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int anchorCellIndex) {
+    public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int axisCellIndex) {
 
         mGameGridCells = gameGridCells;
         mComponentCells = new GridCellView[4];
@@ -51,7 +51,7 @@ public abstract class Tetronimo {
             mComponentCells[i] = mGameGridCells[(cellYPos * NUM_COLS) + cellXPos];
         }
 
-        mAnchorCell = mComponentCells[anchorCellIndex];
+        mAxisCell = mComponentCells[axisCellIndex];
         mCurrentState = RotState.ZERO_DEG;
     }
 
@@ -88,8 +88,6 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
-//            Log.i(TAG, "cellToCheck xPos: " + cellToCheck.getXPos());
-//            Log.i(TAG, "cellToCheck yPos: " + cellToCheck.getYPos());
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -100,21 +98,16 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
                     return false;
                 }
             }
         }
 
-        //move anchor down by 1 to keep up with component cells
-        int anchorXPos = mAnchorCell.getXPos();
-        int anchorYPos = mAnchorCell.getYPos();
-        mAnchorCell = mGameGridCells[((anchorYPos + 1) * NUM_COLS) + anchorXPos];
-
-//        Log.i(TAG, "ANCHOR CHANGED");
-//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
+        //move axis down by 1 to keep up with component cells
+        int axisXPos = mAxisCell.getXPos();
+        int axisYPos = mAxisCell.getYPos();
+        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
 
         //move each component cell down by 1
         for(int i = 0; i < mComponentCells.length; i++) {
@@ -145,8 +138,6 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
-//            Log.i(TAG, "xPos: " + xPos);
-//            Log.i(TAG, "yPos: " + yPos);
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -157,7 +148,6 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if(!checkedCellIsComponent) {
                     return;
                 }
@@ -171,15 +161,10 @@ public abstract class Tetronimo {
             moveComponentToCell(i, xPos - 1, yPos);
         }
 
-        //move anchor left by 1 to keep up with component cells
-        int anchorXPos = mAnchorCell.getXPos();
-        int anchorYPos = mAnchorCell.getYPos();
-        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos - 1)];
-
-//        Log.i(TAG, "ANCHOR CHANGED");
-//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
-//        Log.i(TAG, "------------------End moveLeft()----------------------");
+        //move axis left by 1 to keep up with component cells
+        int axisXPos = mAxisCell.getXPos();
+        int axisYPos = mAxisCell.getYPos();
+        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
     }
 
     /**
@@ -200,8 +185,6 @@ public abstract class Tetronimo {
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
-//            Log.i(TAG, "xPos: " + xPos);
-//            Log.i(TAG, "yPos: " + yPos);
 
             boolean checkedCellIsComponent = false;
             if (cellToCheck.getOccupied()) {
@@ -212,7 +195,6 @@ public abstract class Tetronimo {
                         break;
                     }
                 }
-//                Log.i(TAG, "checkedCellIsComponent = " + checkedCellIsComponent);
                 if (!checkedCellIsComponent) {
                     return;
                 }
@@ -226,15 +208,10 @@ public abstract class Tetronimo {
             moveComponentToCell(i, xPos + 1, yPos);
         }
 
-        //move anchor cell right by 1 to keep up with component cells
-        int anchorXPos = mAnchorCell.getXPos();
-        int anchorYPos = mAnchorCell.getYPos();
-        mAnchorCell = mGameGridCells[(anchorYPos * NUM_COLS) + (anchorXPos + 1)];
-
-//        Log.i(TAG, "ANCHOR CHANGED");
-//        Log.i(TAG, "anchorCell xPos: " + mAnchorCell.getXPos());
-//        Log.i(TAG, "anchorCell yPos: " + mAnchorCell.getYPos());
-//        Log.i(TAG, "------------------End moveRight()----------------------");
+        //move axis cell right by 1 to keep up with component cells
+        int axisXPos = mAxisCell.getXPos();
+        int axisYPos = mAxisCell.getYPos();
+        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
     }
 
     /**
@@ -267,8 +244,8 @@ public abstract class Tetronimo {
                 rowToFallTo--;
             }
 
-            if(mComponentCells[i].equals(mAnchorCell)) {
-                mAnchorCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
+            if(mComponentCells[i].equals(mAxisCell)) {
+                mAxisCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
             }
 
             moveComponentToCell(i, xPos, rowToFallTo);
@@ -317,15 +294,12 @@ public abstract class Tetronimo {
         boolean swapped;
         do {
             swapped = false;
-            //
-            // Log.i(TAG, "swapped: false");
             for(int i = 0; i < mComponentCells.length - 1; i++) {
                 if(mComponentCells[i].getYPos() < mComponentCells[i + 1].getYPos()) {
                     GridCellView temp = mComponentCells[i];
                     mComponentCells[i] = mComponentCells[i + 1];
                     mComponentCells[i + 1] = temp;
                     swapped = true;
-                    //Log.i(TAG, "swapped: true");
                 }
             }
         } while (swapped);
@@ -339,15 +313,12 @@ public abstract class Tetronimo {
         boolean swapped;
         do {
             swapped = false;
-            //
-            // Log.i(TAG, "swapped: false");
             for(int i = 0; i < mComponentCells.length - 1; i++) {
                 if(mComponentCells[i].getXPos() > mComponentCells[i + 1].getXPos()) {
                     GridCellView temp = mComponentCells[i];
                     mComponentCells[i] = mComponentCells[i + 1];
                     mComponentCells[i + 1] = temp;
                     swapped = true;
-                    //Log.i(TAG, "swapped: true");
                 }
             }
         } while (swapped);
