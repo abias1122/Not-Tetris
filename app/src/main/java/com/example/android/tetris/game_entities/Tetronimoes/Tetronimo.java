@@ -225,16 +225,30 @@ public abstract class Tetronimo {
         for(int i = 1; i < mComponentCells.length; i++) {
 
             GridCellView cell = getLowestFreeCellBeneathCell(mComponentCells[i]);
+
             if(cell.getYPos() < highestLowRow && !isComponentCell(cell)) {
                 highestLowRow = cell.getYPos();
                 anchorCell = mComponentCells[i];
             }
+
+//            if (isComponentCell(mGameGridCells[((cell.getYPos() + 1) * NUM_COLS) + cell.getXPos()])) {
+//                anchorCell = mComponentCells[i];
+//            }
         }
 
         for(int i = 0; i < mComponentCells.length; i++) {
             int yPosDifference = anchorCell.getYPos() - mComponentCells[i].getYPos();
             int newYPos = highestLowRow - yPosDifference;
             int xPos = mComponentCells[i].getXPos();
+
+            //prevent L and ReverseLTetronimoes from clipping into cells
+            //i set to -1 to have loop start from beginning at continue
+            if(mGameGridCells[(newYPos * NUM_COLS) + xPos].getOccupied()) {
+                highestLowRow --;
+                i = -1;
+                continue;
+            }
+
             moveComponentToCell(i, xPos, newYPos);
         }
 
