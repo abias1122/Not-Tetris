@@ -217,7 +217,6 @@ public abstract class Tetronimo {
      * Move tetronimo to lowest available position directly beneath it
      */
     public void moveToBottom() {
-        //TODO: Fix defect
         sortComponentGridCellsByYPos();
         int highestLowRow = getLowestFreeCellBeneathCell(mComponentCells[0]).getYPos();
         GridCellView anchorCell = mComponentCells[0];
@@ -230,10 +229,6 @@ public abstract class Tetronimo {
                 highestLowRow = cell.getYPos();
                 anchorCell = mComponentCells[i];
             }
-
-//            if (isComponentCell(mGameGridCells[((cell.getYPos() + 1) * NUM_COLS) + cell.getXPos()])) {
-//                anchorCell = mComponentCells[i];
-//            }
         }
 
         for(int i = 0; i < mComponentCells.length; i++) {
@@ -251,23 +246,6 @@ public abstract class Tetronimo {
 
             moveComponentToCell(i, xPos, newYPos);
         }
-
-//        int yPosToUse = mComponentCells[0].getYPos();
-//        int xPos;
-//        for(int i = 0; i < mComponentCells.length; i++) {
-//
-//            xPos = mComponentCells[i].getXPos();
-//            if(mComponentCells[i].getYPos() < yPosToUse) {
-//                yPosToUse = mComponentCells[i].getYPos();
-//                rowToFallTo--;
-//            }
-//
-//            if(mComponentCells[i].equals(mAxisCell)) {
-//                mAxisCell = mGameGridCells[(rowToFallTo * NUM_COLS) + xPos];
-//            }
-//
-//            moveComponentToCell(i, xPos, rowToFallTo);
-//        }
     }
 
     /**
