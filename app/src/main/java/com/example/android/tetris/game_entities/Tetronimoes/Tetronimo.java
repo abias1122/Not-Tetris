@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.GridLayout;
 
 import com.example.android.tetris.R;
+import com.example.android.tetris.game_entities.Gameboard;
 import com.example.android.tetris.game_entities.GridCellView;
 
 /**
@@ -14,11 +15,11 @@ public abstract class Tetronimo {
 
     final int NUM_COLS = 10;
     final int NUM_ROWS = 24;
-    final int DRAWABLE_ID;
+    final private int DRAWABLE_ID;
     final String TAG = "Tetronimo";
 
     GridCellView[] mComponentCells;
-    GridCellView[] mGameGridCells;
+    Gameboard mGameBoard;
     GridCellView mAxisCell;
 
     enum RotState {
@@ -29,14 +30,14 @@ public abstract class Tetronimo {
 
     /**
      * Called from subclass constructors
-     * @param gameGridCells the grid cells being used in the current game
+     * @param gameboard the gameboard being used in the current game
      * @param initialPositions starting X and Y positions for component cells
      * @param drawableId drawable to be used when occupying a cell
      * @param axisCellIndex index of the axis cell's X and Y positions in initialPositions
      */
-    public Tetronimo(GridCellView[] gameGridCells, int[][] initialPositions, int drawableId, int axisCellIndex) {
+    public Tetronimo(Gameboard gameboard, int[][] initialPositions, int drawableId, int axisCellIndex) {
 
-        mGameGridCells = gameGridCells;
+        mGameBoard = gameboard;
         mComponentCells = new GridCellView[4];
         DRAWABLE_ID = drawableId;
 
@@ -47,7 +48,7 @@ public abstract class Tetronimo {
             int cellXPos = xAndYPositions[0];
             int cellYPos = xAndYPositions[1];
 
-            mComponentCells[i] = mGameGridCells[(cellYPos * NUM_COLS) + cellXPos];
+            mComponentCells[i] = mGameBoard.getGridCell(cellXPos, cellYPos);
         }
 
         mAxisCell = mComponentCells[axisCellIndex];
@@ -86,7 +87,7 @@ public abstract class Tetronimo {
 
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
-            GridCellView cellToCheck = mGameGridCells[((yPos + 1) * NUM_COLS) + xPos];
+            GridCellView cellToCheck = mGameBoard.getGridCell(xPos, yPos + 1);
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -106,7 +107,7 @@ public abstract class Tetronimo {
         //move axis down by 1 to keep up with component cells
         int axisXPos = mAxisCell.getXPos();
         int axisYPos = mAxisCell.getYPos();
-        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
+        mAxisCell = mGameBoard.getGridCell(axisXPos, axisYPos + 1);
 
         //move each component cell down by 1
         for(int i = 0; i < mComponentCells.length; i++) {
@@ -136,7 +137,7 @@ public abstract class Tetronimo {
 
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
-            GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos - 1)];
+            GridCellView cellToCheck = mGameBoard.getGridCell(xPos - 1, yPos);
 
             boolean checkedCellIsComponent = false;
             if(cellToCheck.getOccupied()) {
@@ -163,7 +164,7 @@ public abstract class Tetronimo {
         //move axis left by 1 to keep up with component cells
         int axisXPos = mAxisCell.getXPos();
         int axisYPos = mAxisCell.getYPos();
-        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
+        mAxisCell = mGameBoard.getGridCell(axisXPos - 1, axisYPos);
     }
 
     /**
@@ -183,7 +184,7 @@ public abstract class Tetronimo {
 
             yPos = mComponentCells[i].getYPos();
             xPos = mComponentCells[i].getXPos();
-            GridCellView cellToCheck = mGameGridCells[(yPos * NUM_COLS) + (xPos + 1)];
+            GridCellView cellToCheck = mGameBoard.getGridCell(xPos + 1, yPos);
 
             boolean checkedCellIsComponent = false;
             if (cellToCheck.getOccupied()) {
@@ -210,7 +211,7 @@ public abstract class Tetronimo {
         //move axis cell right by 1 to keep up with component cells
         int axisXPos = mAxisCell.getXPos();
         int axisYPos = mAxisCell.getYPos();
-        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
+        mAxisCell = mGameBoard.getGridCell(axisXPos + 1, axisYPos);
     }
 
     /**
@@ -238,7 +239,7 @@ public abstract class Tetronimo {
 
             //prevent L and ReverseLTetronimoes from clipping into cells
             //i set to -1 to have loop start from beginning at continue
-            if(mGameGridCells[(newYPos * NUM_COLS) + xPos].getOccupied()) {
+            if(mGameBoard.getGridCell(xPos, newYPos).getOccupied()) {
                 highestLowRow --;
                 i = -1;
                 continue;
@@ -278,7 +279,7 @@ public abstract class Tetronimo {
         boolean lowerCellExists = yPos < NUM_ROWS - 1;
 
         while(lowerCellExists) {
-            if(mGameGridCells[((yPos + 1) * NUM_COLS) + xPos].getOccupied()) {
+            if(mGameBoard.getGridCell(xPos, yPos + 1).getOccupied()) {
                 break;
             }
 
@@ -286,7 +287,7 @@ public abstract class Tetronimo {
             lowerCellExists = yPos < NUM_ROWS - 1;
         }
 
-        return mGameGridCells[(yPos * NUM_COLS) + xPos];
+        return mGameBoard.getGridCell(xPos, yPos);
     }
 
     protected void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
@@ -294,7 +295,7 @@ public abstract class Tetronimo {
         mComponentCells[componentIndex].setImageResource(android.R.color.transparent);
         mComponentCells[componentIndex].setOccupied(false);
 
-        mComponentCells[componentIndex] = mGameGridCells[(newYPos * NUM_COLS) + newXPos];
+        mComponentCells[componentIndex] = mGameBoard.getGridCell(newXPos, newYPos);
         mComponentCells[componentIndex].setImageResource(DRAWABLE_ID);
         mComponentCells[componentIndex].setOccupied(true);
     }

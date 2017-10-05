@@ -3,6 +3,7 @@ package com.example.android.tetris.game_entities.Tetronimoes;
 import android.util.Log;
 
 import com.example.android.tetris.R;
+import com.example.android.tetris.game_entities.Gameboard;
 import com.example.android.tetris.game_entities.GridCellView;
 
 /**
@@ -15,8 +16,8 @@ import com.example.android.tetris.game_entities.GridCellView;
 
 public class LTetronimo extends Tetronimo {
 
-    public LTetronimo(GridCellView[] gameGridCells) {
-        super(gameGridCells,
+    public LTetronimo(Gameboard gameboard) {
+        super(gameboard,
                 new int[][] {{3, 1}, {4, 1}, {5, 1}, {5, 0}},
                 R.drawable.l_tetron_grid_cell,
                 1);
@@ -35,9 +36,9 @@ public class LTetronimo extends Tetronimo {
         switch (mCurrentState) {
             case ZERO_DEG: {
                 if(axisYPos == (NUM_ROWS - 1) ||
-                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)].getOccupied() ||
-                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied() ||
-                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied()) {
+                        mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied()) {
                     useNormalRotate = false;
                 }
 
@@ -69,9 +70,9 @@ public class LTetronimo extends Tetronimo {
                 }
                 else {
                     if (axisYPos < (NUM_ROWS - 2) &&
-                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos + 2) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos + 2) * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 2).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -100,8 +101,8 @@ public class LTetronimo extends Tetronimo {
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     else if (axisYPos > 1 &&
-                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos - 2) * NUM_COLS) + axisXPos].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -136,9 +137,9 @@ public class LTetronimo extends Tetronimo {
 
             case NINETY_DEG: {
                 if(axisXPos == 0 ||
-                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() ||
-                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied() ||
-                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
+                        mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied()) {
                     useNormalRotate = false;
                 }
 
@@ -170,8 +171,8 @@ public class LTetronimo extends Tetronimo {
                 }
                 else {
                     if (axisXPos < (NUM_COLS - 2) &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 2)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -195,9 +196,9 @@ public class LTetronimo extends Tetronimo {
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     else if (axisXPos > 1 &&
-                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 2)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 2)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos + 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -236,9 +237,9 @@ public class LTetronimo extends Tetronimo {
 
             case ONE_EIGHTY_DEG: {
                 if(axisYPos == 0 ||
-                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied() ||
-                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)].getOccupied() ||
-                        mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied()) {
+                        mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied()) {
                     useNormalRotate = false;
                 }
 
@@ -270,9 +271,9 @@ public class LTetronimo extends Tetronimo {
                 }
                 else {
                     if (axisYPos > 1 &&
-                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos - 2) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos - 2) * NUM_COLS) + (axisXPos - 1)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos - 2).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -301,8 +302,8 @@ public class LTetronimo extends Tetronimo {
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     else if (axisYPos < (NUM_ROWS - 2) &&
-                            !mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos].getOccupied() &&
-                            !mGameGridCells[((axisYPos + 2) * NUM_COLS) + axisXPos].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -337,9 +338,9 @@ public class LTetronimo extends Tetronimo {
 
             case TWO_SEVENTY_DEG: {
                 if(axisXPos == (NUM_COLS - 1) ||
-                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied() ||
-                        mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied() ||
-                        mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
+                        mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() ||
+                        mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied()) {
                     useNormalRotate = false;
                 }
 
@@ -371,9 +372,9 @@ public class LTetronimo extends Tetronimo {
                 }
                 else {
                     if (axisXPos < (NUM_COLS - 2) &&
-                            !mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 2)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 2)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos - 1).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 
@@ -402,8 +403,8 @@ public class LTetronimo extends Tetronimo {
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                     }
                     else if (axisXPos > 1 &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)].getOccupied() &&
-                            !mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 2)].getOccupied()) {
+                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
+                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied()) {
 
                         for(int i = 0; i < mComponentCells.length; i++) {
 

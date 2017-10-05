@@ -46,7 +46,7 @@ Date:   Thu Aug 10 09:49:53 2017 -0400
     to alter how Tetronimo abstract class and its sub classes are structured
     to avoid mental clutter.
 
-[33mcommit aa52b14a5834f89ed1a47b4674757eea14628563[m[33m ([m[1;32mgameboard[m[33m)[m
+[33mcommit aa52b14a5834f89ed1a47b4674757eea14628563[m[33m ([m[1;32mGameGridLayout[m[33m)[m
 Author: Anthony Bias <abias1122@gmail.com>
 Date:   Wed Aug 9 17:47:00 2017 -0400
 

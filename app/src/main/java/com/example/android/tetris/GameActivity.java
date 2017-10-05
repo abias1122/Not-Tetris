@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 
+import com.example.android.tetris.game_entities.Gameboard;
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.TetronimoDispenser.TetronimoDispenser;
 import com.example.android.tetris.game_entities.Tetronimoes.LTetronimo;
@@ -24,8 +25,8 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     private final String TAG = "GameActivity";
     private final String DEBUG_TAG = "Gesture detector";
-    private GridLayout mGameboard;
-    private GridCellView[] mGridCellsViews;
+    private GridLayout mGameGridLayout;
+    private Gameboard mGameboard;
     private Handler mMoveDownHandler;
     private GestureDetectorCompat mGestureDetector;
 
@@ -36,9 +37,6 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private float mInitX;
     private float mMovementThreshold;
 
-    private final int NUM_COLS = 10;
-    private final int NUM_ROWS = 24;
-
     private final int DEFAULT_DELAY = 1000;
     private final int FAST_DELAY = 250;
     private int delay;
@@ -48,47 +46,40 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        mGameboard = (GridLayout) findViewById(R.id.gameboard);
+        mGameGridLayout = (GridLayout) findViewById(R.id.gameboard);
+        mGameboard = new Gameboard(this, mGameGridLayout);
+        mGameGridLayout.setColumnCount(mGameboard.NUM_COLS);
+        mGameGridLayout.setRowCount(mGameboard.NUM_ROWS);
         mGestureDetector = new GestureDetectorCompat(this, this);
 
         delay = DEFAULT_DELAY;
-        mGameboard.setColumnCount(NUM_COLS);
-        mGameboard.setRowCount(NUM_ROWS);
-        mGridCellsViews = new GridCellView[NUM_COLS * NUM_ROWS];
 
-        for(int y = 0; y < NUM_ROWS; y++) {
-            for(int x = 0; x < NUM_COLS; x++) {
-                GridCellView newGridCell = new GridCellView(this, x, y);
-                mGridCellsViews[(y*NUM_COLS) + x] = newGridCell;
-                mGameboard.addView(newGridCell);
-            }
-        }
-        mDispenser = new TetronimoDispenser(mGridCellsViews);
+        mDispenser = new TetronimoDispenser(mGameboard);
 
-        mGameboard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        mGameGridLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                int parentWidth = mGameboard.getWidth();
-                int parentHeight = mGameboard.getHeight();
-                int width = parentWidth / NUM_COLS;
-                int height = parentHeight / NUM_ROWS;
+                int parentWidth = mGameGridLayout.getWidth();
+                int parentHeight = mGameGridLayout.getHeight();
+                int width = parentWidth / mGameboard.NUM_COLS;
+                int height = parentHeight / mGameboard.NUM_ROWS;
 
                 mMovementThreshold = width / 2;
 
                 Log.i(TAG, "cell width: " + width);
                 Log.i(TAG, "cell height:" + height);
 
-                for(int x = 0; x < NUM_COLS; x++) {
-                    for(int y = 0; y < NUM_ROWS; y++) {
+                for(int x = 0; x < mGameboard.NUM_COLS; x++) {
+                    for(int y = 0; y < mGameboard.NUM_ROWS; y++) {
                         GridLayout.LayoutParams params = (GridLayout.LayoutParams)
-                                mGridCellsViews[(x * NUM_ROWS) + y].getLayoutParams();
+                               mGameboard.getGridCell(x, y).getLayoutParams();
                         params.width = width;
                         params.height = height;
-                        mGridCellsViews[(x * NUM_ROWS) + y].setLayoutParams(params);
+                        mGameboard.getGridCell(x, y).setLayoutParams(params);
                     }
                 }
 
-                mGameboard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mGameGridLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 

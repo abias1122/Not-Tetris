@@ -2,6 +2,7 @@ package com.example.android.tetris.game_entities.TetronimoDispenser;
 
 import android.util.Log;
 
+import com.example.android.tetris.game_entities.Gameboard;
 import com.example.android.tetris.game_entities.GridCellView;
 import com.example.android.tetris.game_entities.Tetronimoes.LTetronimo;
 import com.example.android.tetris.game_entities.Tetronimoes.ReverseLTetronimo;
@@ -23,7 +24,7 @@ import java.util.Random;
 public class TetronimoDispenser {
 
     private TetronimoLinkedList mTetronimoList;
-    private GridCellView[] mGameGridCells;
+    private Gameboard mGameboard;
 
     private final int NUM_OF_TETRONIMOES = 4;
 
@@ -53,9 +54,9 @@ public class TetronimoDispenser {
         }
     }
 
-    public TetronimoDispenser(GridCellView[] gameGridCells) {
+    public TetronimoDispenser(Gameboard gameboard) {
 
-        mGameGridCells = gameGridCells;
+        mGameboard = gameboard;
         mTetronimoList = new TetronimoLinkedList();
 
         for(int i = 0; i < NUM_OF_TETRONIMOES; i++) {
@@ -79,19 +80,19 @@ public class TetronimoDispenser {
         TetronimoType type = TetronimoType.getTetronimoType(typeNumber);
 
         switch(type) {
-            case SQUARE : {return new SquareTetronimo(mGameGridCells);}
+            case SQUARE : {return new SquareTetronimo(mGameboard);}
 
-            case T : {return new TTetronimo(mGameGridCells);}
+            case T : {return new TTetronimo(mGameboard);}
 
-            case STRAIGHT : {return new StraightTetronimo(mGameGridCells);}
+            case STRAIGHT : {return new StraightTetronimo(mGameboard);}
 
-            case Z : {return new ZTetronimo(mGameGridCells);}
+            case Z : {return new ZTetronimo(mGameboard);}
 
-            case S : {return new STetronimo(mGameGridCells);}
+            case S : {return new STetronimo(mGameboard);}
 
-            case L : {return new LTetronimo(mGameGridCells);}
+            case L : {return new LTetronimo(mGameboard);}
 
-            case REVERSE_L : {return new ReverseLTetronimo(mGameGridCells);}
+            case REVERSE_L : {return new ReverseLTetronimo(mGameboard);}
 
             default : {
                 throw new UnsupportedOperationException("Tetronimo type not recognized");}
