@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.android.tetris.R;
 import com.example.android.tetris.game_entities.Gameboard;
-import com.example.android.tetris.game_entities.GridCellView;
 
 /**
  * Represents reverse-L tetronimo:
@@ -25,7 +24,7 @@ public class ReverseLTetronimo extends Tetronimo {
     @Override
     public void rotate() {
 
-        boolean useNormalRotate = true;
+        boolean useNormalRotate;
         int axisXPos = mAxisCell.getXPos();
         int axisYPos = mAxisCell.getYPos();
         Log.i(TAG, "=========IN ROTATE=========");
@@ -34,15 +33,11 @@ public class ReverseLTetronimo extends Tetronimo {
 
         switch (mCurrentState) {
             case ZERO_DEG: {
-                if(axisYPos == (NUM_ROWS - 1) ||
-                        mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied()) {
-                    useNormalRotate = false;
-                }
+                useNormalRotate = axisYPos < NUM_ROWS - 1 &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied();
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
@@ -51,37 +46,36 @@ public class ReverseLTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
+                else if (axisYPos > 1 &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 2).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos - 1, axisYPos - 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}, {axisXPos + 1, axisYPos - 2}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                else if (axisYPos < (NUM_ROWS - 2) &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos - 1, axisYPos}, {axisXPos - 1, axisYPos - 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                //no rotate
                 else {
-                    if (axisYPos > 1 &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 2).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos - 1, axisYPos - 1}};
-                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}, {axisXPos + 1, axisYPos - 2}};
-                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else if (axisYPos < (NUM_ROWS - 2) &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos}, {axisXPos - 1, axisYPos - 1}};
-                        int[][] toCoordinates   = {{axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 1}};
-                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else {
-                        break;
-                    }
+                    break;
                 }
 
                 mCurrentState = RotState.NINETY_DEG;
@@ -89,15 +83,11 @@ public class ReverseLTetronimo extends Tetronimo {
             }
 
             case NINETY_DEG: {
-                if(axisXPos == 0 ||
-                        mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied()) {
-                    useNormalRotate = false;
-                }
+                useNormalRotate = axisXPos > 0 &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied();
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
@@ -106,54 +96,49 @@ public class ReverseLTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
-                else {
-                    if (axisXPos < (NUM_COLS - 2) &&
-                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos + 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied()) {
+                else if (axisXPos < (NUM_COLS - 2) &&
+                        !mGameBoard.getGridCell(axisXPos + 2, axisYPos + 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied()) {
 
-                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos + 1, axisYPos - 1}};
-                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}, {axisXPos + 2, axisYPos + 1}};
-                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+                    int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos + 1, axisYPos - 1}};
+                    int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}, {axisXPos + 2, axisYPos + 1}};
+                    int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else if (axisXPos > 1 &&
-                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos + 1, axisYPos - 1}};
-                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}};
-                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    //no rotate
-                    else {
-                        break;
-                    }
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                 }
+                else if (axisXPos > 1 &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos + 1, axisYPos - 1}};
+                    int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}};
+                    int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                //no rotate
+                else {
+                    break;
+                }
+
 
                 mCurrentState = RotState.ONE_EIGHTY_DEG;
                 break;
             }
 
             case ONE_EIGHTY_DEG: {
-                if(axisYPos == 0 ||
-                        mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied()) {
-                    useNormalRotate = false;
-                }
+                useNormalRotate = axisYPos > 0 &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied();
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
@@ -162,38 +147,36 @@ public class ReverseLTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
+                else if (axisYPos < (NUM_ROWS - 2) &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 2).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}, {axisXPos - 1, axisYPos + 2}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                else if (axisYPos > 1 &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos + 1, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos - 2}, {axisXPos, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                //no rotate
                 else {
-                    if (axisYPos < (NUM_ROWS - 2) &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 2).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos + 1}};
-                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}, {axisXPos - 1, axisYPos + 2}};
-                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else if (axisYPos > 1 &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos + 1, axisYPos + 1}};
-                        int[][] toCoordinates   = {{axisXPos, axisYPos - 2}, {axisXPos, axisYPos - 1}};
-                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    //no rotate
-                    else {
-                        break;
-                    }
+                    break;
                 }
 
                 mCurrentState = RotState.TWO_SEVENTY_DEG;
@@ -201,15 +184,11 @@ public class ReverseLTetronimo extends Tetronimo {
             }
 
             case TWO_SEVENTY_DEG: {
-                if(axisXPos == (NUM_COLS - 1) ||
-                        mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() ||
-                        mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied()) {
-                    useNormalRotate = false;
-                }
+                useNormalRotate = axisXPos < NUM_COLS - 1 &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied();
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
@@ -218,37 +197,35 @@ public class ReverseLTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
+                else if (axisXPos > 1 &&
+                        !mGameBoard.getGridCell(axisXPos - 2, axisYPos - 1).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos - 1, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}, {axisXPos - 2, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
+                else if (axisXPos < (NUM_COLS - 2) &&
+                        !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
+                        !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied()) {
+
+                    int[][] fromCoordinates = {{axisXPos, axisYPos + 1}, {axisXPos - 1, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
+                    int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
+
+                    Log.i(TAG, "AXIS CHANGED");
+                    Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
+                    Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
+                }
                 else {
-                    if (axisXPos > 1 &&
-                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos - 1).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos - 1, axisYPos + 1}};
-                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}, {axisXPos - 2, axisYPos - 1}};
-                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else if (axisXPos < (NUM_COLS - 2) &&
-                            !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
-                            !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied()) {
-
-                        int[][] fromCoordinates = {{axisXPos, axisYPos + 1}, {axisXPos - 1, axisYPos + 1}};
-                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
-                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
-                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
-
-                        Log.i(TAG, "AXIS CHANGED");
-                        Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
-                        Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
-                    }
-                    else {
-                        break;
-                    }
+                    break;
                 }
 
                 mCurrentState = RotState.ZERO_DEG;
