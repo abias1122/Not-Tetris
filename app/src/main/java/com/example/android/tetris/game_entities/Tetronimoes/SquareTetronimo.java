@@ -2,7 +2,6 @@ package com.example.android.tetris.game_entities.Tetronimoes;
 
 import com.example.android.tetris.R;
 import com.example.android.tetris.game_entities.Gameboard;
-import com.example.android.tetris.game_entities.GridCellView;
 
 /**
  * Tetronimo shaped like a square:
