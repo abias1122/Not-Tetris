@@ -36,7 +36,7 @@ public class TTetronimo extends Tetronimo {
 
             case ZERO_DEG: {
 
-                useNormalRotate = axisYPos < (NUM_ROWS - 1) &&
+                useNormalRotate = axisYPos < (mGameBoard.NUM_ROWS - 1) &&
                         !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied();
 
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
@@ -60,7 +60,7 @@ public class TTetronimo extends Tetronimo {
                     Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                     Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                 }
-                else if(axisYPos < (NUM_ROWS - 1) &&
+                else if(axisYPos < (mGameBoard.NUM_ROWS - 1) &&
                         !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied()) {
 
@@ -79,8 +79,8 @@ public class TTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos - 1, axisYPos - 1};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
-                else if(axisXPos < (NUM_COLS - 2) &&
-                        axisYPos < (NUM_ROWS - 1) &&
+                else if(axisXPos < (mGameBoard.NUM_COLS - 2) &&
+                        axisYPos < (mGameBoard.NUM_ROWS - 1) &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied()) {
@@ -90,7 +90,7 @@ public class TTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
-                else if(axisXPos < (NUM_COLS - 2) &&
+                else if(axisXPos < (mGameBoard.NUM_COLS - 2) &&
                         axisYPos > 2 &&
                         !mGameBoard.getGridCell(axisXPos + 2, axisYPos - 1).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 2).getOccupied() &&
@@ -122,7 +122,7 @@ public class TTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
-                else if(axisXPos < (NUM_COLS - 2) &&
+                else if(axisXPos < (mGameBoard.NUM_COLS - 2) &&
                         !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied()) {
 
@@ -148,7 +148,7 @@ public class TTetronimo extends Tetronimo {
                     Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                     Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                 }
-                else if(axisXPos < (NUM_COLS - 2) &&
+                else if(axisXPos < (mGameBoard.NUM_COLS - 2) &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 2, axisYPos - 1).getOccupied()) {
 
@@ -182,7 +182,7 @@ public class TTetronimo extends Tetronimo {
                     int[] newAxisCoordinates = {axisXPos, axisYPos};
                     rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
-                else if(axisYPos < (NUM_ROWS - 2) &&
+                else if(axisYPos < (mGameBoard.NUM_ROWS - 2) &&
                         !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied()) {
 
@@ -208,7 +208,7 @@ public class TTetronimo extends Tetronimo {
                     Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                     Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                 }
-                else if(axisYPos < (NUM_ROWS - 2) &&
+                else if(axisYPos < (mGameBoard.NUM_ROWS - 2) &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 2).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied()) {
 
@@ -232,7 +232,7 @@ public class TTetronimo extends Tetronimo {
 
             case TWO_SEVENTY_DEG: {
 
-                useNormalRotate = axisXPos < (NUM_COLS - 1) &&
+                useNormalRotate = axisXPos < (mGameBoard.NUM_COLS - 1) &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied();
 
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
@@ -269,7 +269,7 @@ public class TTetronimo extends Tetronimo {
                     Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                     Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
                 }
-                else if(axisXPos < (NUM_COLS - 1) &&
+                else if(axisXPos < (mGameBoard.NUM_COLS - 1) &&
                         !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied() &&
                         !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied()) {
 

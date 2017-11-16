@@ -14,9 +14,6 @@ import com.example.android.tetris.game_entities.GridCellView;
 //TODO: Make unit tests to properly test rotation
 public abstract class Tetronimo {
 
-    final int NUM_COLS = 10;
-    final int NUM_ROWS = 24;
-
     /**
      * ID for the drawable resource used to
      * fill in GridCellViews. Each Tetronimo subclass
@@ -142,7 +139,7 @@ public abstract class Tetronimo {
         //check that tetronimo can move down
         for (GridCellView componentCell : mComponentCells) {
 
-            if (componentCell.getYPos() == NUM_ROWS - 1) {
+            if (componentCell.getYPos() == mGameBoard.NUM_ROWS - 1) {
                 return false;
             }
 
@@ -241,7 +238,7 @@ public abstract class Tetronimo {
         sortComponentGridCellsByXPos();
         for (int i = mComponentCells.length - 1; i >= 0; i--) {
 
-            if (mComponentCells[i].getXPos() == NUM_COLS - 1) {
+            if (mComponentCells[i].getXPos() == mGameBoard.NUM_COLS - 1) {
                 return;
             }
 
@@ -339,7 +336,7 @@ public abstract class Tetronimo {
     private GridCellView getLowestFreeCellBeneathCell(GridCellView gridCell) {
         int yPos = gridCell.getYPos();
         int xPos = gridCell.getXPos();
-        boolean lowerCellExists = yPos < NUM_ROWS - 1;
+        boolean lowerCellExists = yPos < mGameBoard.NUM_ROWS - 1;
 
         while(lowerCellExists) {
             if(mGameBoard.getGridCell(xPos, yPos + 1).getOccupied()) {
@@ -347,7 +344,7 @@ public abstract class Tetronimo {
             }
 
             yPos++;
-            lowerCellExists = yPos < NUM_ROWS - 1;
+            lowerCellExists = yPos < mGameBoard.NUM_ROWS - 1;
         }
 
         return mGameBoard.getGridCell(xPos, yPos);
