@@ -1,39 +1,69 @@
 package com.example.android.tetris.game_entities.Tetronimoes;
 
-import android.util.Log;
-import android.widget.GridLayout;
-
-import com.example.android.tetris.R;
 import com.example.android.tetris.game_entities.Gameboard;
 import com.example.android.tetris.game_entities.GridCellView;
 
 /**
- * A shape comprising of four squares used in Tetris
+ * @author Anthony Bias
+ * Tracks 4 {@link GridCellView}'s positions on the Gameboard and
+ * provides ways for the player and game to move them as a whole.
+ *
+ * Different subclasses of Tetronimo store GridCellViews in different configurations
+ * and have different ways of moving component cells relative to eachother.
  */
-
+//TODO: Make unit tests to properly test rotation
 public abstract class Tetronimo {
 
     final int NUM_COLS = 10;
     final int NUM_ROWS = 24;
-    final private int DRAWABLE_ID;
-    final String TAG = "Tetronimo";
 
-    GridCellView[] mComponentCells;
+    /**
+     * ID for the drawable resource used to
+     * fill in GridCellViews. Each Tetronimo subclass
+     * has its own drawable.
+     */
+    final private int DRAWABLE_ID;
+
+    /**
+     * Gameboard for current game.
+     */
     Gameboard mGameBoard;
+
+    /**
+     * GridCellViews that the Tetronimo tracks.
+     */
+    private GridCellView[] mComponentCells;
+
+    /**
+     * GridCellView that other component cells are
+     * moved relative to when the tetronimo is moved.
+     */
     GridCellView mAxisCell;
 
+    /**
+     * Used for logging.
+     */
+    final String TAG = "Tetronimo";
+
+    /**
+     * Rotation state
+     */
     enum RotState {
         ZERO_DEG, NINETY_DEG,
         ONE_EIGHTY_DEG, TWO_SEVENTY_DEG;
     }
+
+    /**
+     * Used  to determine how an object of a Tetronimo subclass rotates.
+     */
     RotState mCurrentState;
 
     /**
-     * Called from subclass constructors
-     * @param gameboard the gameboard being used in the current game
+     * Constructor
+     * @param gameboard        the gameboard being used in the current game
      * @param initialPositions starting X and Y positions for component cells
-     * @param drawableId drawable to be used when occupying a cell
-     * @param axisCellIndex index of the axis cell's X and Y positions in initialPositions
+     * @param drawableId       drawable to be used when occupying a cell
+     * @param axisCellIndex    index of the axis cell's X and Y positions in initialPositions
      */
     public Tetronimo(Gameboard gameboard, int[][] initialPositions, int drawableId, int axisCellIndex) {
 
@@ -55,10 +85,13 @@ public abstract class Tetronimo {
         mCurrentState = RotState.ZERO_DEG;
     }
 
+    /**
+     * Make tetronimo appear on screen
+     */
     public void putInGame() {
-        for(int i = 0; i < mComponentCells.length; i++) {
-            mComponentCells[i].setOccupied(true);
-            mComponentCells[i].setImageResource(DRAWABLE_ID);
+        for (GridCellView componentCell : mComponentCells) {
+            componentCell.setOccupied(true);
+            componentCell.setImageResource(DRAWABLE_ID);
         }
     }
 
@@ -68,9 +101,37 @@ public abstract class Tetronimo {
     public abstract void rotate();
 
     /**
+     * Called by a Tetronimo subclass's implementation of rotate(). Moves cells to
+     * where they need to be once rotate() decides which cells need to go where.
+     * @param fromCoordinates     array of array of x and y positions of component cells to move from.
+     *                            in the sub arrays, put x in index 0 and y in index 1.
+     * @param toCoordinates       array of x and y positions to move component cells to.
+     *                            in the sub arrays, put x in index 0 and y in index 1.
+     *                            function assumes toCoordinates has same size as fromCoordinates
+     * @param newAxisCoordinates  new coordinates for axis cell: if axis is not changing, use
+     *                            current mAxisCell coordinates.
+     */
+    void rotate(int[][] fromCoordinates, int[][] toCoordinates, int[] newAxisCoordinates) {
+
+        GridCellView componentCell;
+        for(int i = 0; i < fromCoordinates.length; i++) {
+            for (int j = 0; j < mComponentCells.length; j++) {
+                componentCell = mComponentCells[j];
+                if (componentCell.getXPos() == fromCoordinates[i][0] &&
+                        componentCell.getYPos() == fromCoordinates[i][1]) {
+                    moveComponentToCell(j, toCoordinates[i][0], toCoordinates[i][1]);
+                    break;
+                }
+            }
+        }
+
+        mAxisCell = mGameBoard.getGridCell(newAxisCoordinates[0], newAxisCoordinates[1]);
+    }
+
+    /**
      * Move each component cell down by 1 if space is available.
      * Used to make the tetronimo fall down the screen.
-     * @return true if tetronimo could move down, false if otherwise
+     * @return true if tetronimo can move down, false if otherwise
      */
     public boolean moveDown() {
 
@@ -79,26 +140,27 @@ public abstract class Tetronimo {
 
         sortComponentGridCellsByYPos();
         //check that tetronimo can move down
-        for(int i = 0; i < mComponentCells.length; i++) {
+        for (GridCellView componentCell : mComponentCells) {
 
-            if(mComponentCells[i].getYPos() == NUM_ROWS - 1) {
+            if (componentCell.getYPos() == NUM_ROWS - 1) {
                 return false;
             }
 
-            yPos = mComponentCells[i].getYPos();
-            xPos = mComponentCells[i].getXPos();
+            yPos = componentCell.getYPos();
+            xPos = componentCell.getXPos();
             GridCellView cellToCheck = mGameBoard.getGridCell(xPos, yPos + 1);
 
-            boolean checkedCellIsComponent = false;
-            if(cellToCheck.getOccupied()) {
+            if (cellToCheck.getOccupied()) {
+                boolean checkedCellIsComponent = false;
 
-                for(GridCellView gridCell : mComponentCells) {
-                    if(cellToCheck.equals(gridCell)) {
+                //check if occupied cell is a component cell
+                for (GridCellView gridCell : mComponentCells) {
+                    if (cellToCheck.equals(gridCell)) {
                         checkedCellIsComponent = true;
                         break;
                     }
                 }
-                if(!checkedCellIsComponent) {
+                if (!checkedCellIsComponent) {
                     return false;
                 }
             }
@@ -127,28 +189,29 @@ public abstract class Tetronimo {
         int yPos;
         int xPos;
 
-        //check if cells directly left of component cells are occupied
         sortComponentGridCellsByXPos();
-        for(int i = 0; i < mComponentCells.length; i++) {
+        //check if cells directly left of component cells are occupied
+        for (GridCellView componentCell : mComponentCells) {
 
-            if(mComponentCells[i].getXPos() == 0) {
+            if (componentCell.getXPos() == 0) {
                 return;
             }
 
-            yPos = mComponentCells[i].getYPos();
-            xPos = mComponentCells[i].getXPos();
+            yPos = componentCell.getYPos();
+            xPos = componentCell.getXPos();
             GridCellView cellToCheck = mGameBoard.getGridCell(xPos - 1, yPos);
 
-            boolean checkedCellIsComponent = false;
-            if(cellToCheck.getOccupied()) {
+            if (cellToCheck.getOccupied()) {
+                boolean checkedCellIsComponent = false;
 
-                for(GridCellView gridCell : mComponentCells) {
-                    if(cellToCheck.equals(gridCell)) {
+                //check if occupied cell is a component
+                for (GridCellView gridCell : mComponentCells) {
+                    if (cellToCheck.equals(gridCell)) {
                         checkedCellIsComponent = true;
                         break;
                     }
                 }
-                if(!checkedCellIsComponent) {
+                if (!checkedCellIsComponent) {
                     return;
                 }
             }
@@ -186,9 +249,10 @@ public abstract class Tetronimo {
             xPos = mComponentCells[i].getXPos();
             GridCellView cellToCheck = mGameBoard.getGridCell(xPos + 1, yPos);
 
-            boolean checkedCellIsComponent = false;
             if (cellToCheck.getOccupied()) {
+                boolean checkedCellIsComponent = false;
 
+                //check if occupied cell is a component
                 for (GridCellView gridCell : mComponentCells) {
                     if (cellToCheck.equals(gridCell)) {
                         checkedCellIsComponent = true;
@@ -266,10 +330,9 @@ public abstract class Tetronimo {
         return false;
     }
 
-    //TODO: Fix Documentation
     /**
      *
-     * @param gridCell
+     * @param gridCell GridCellView to look beneath
      * @return lowest free row below gridCell. Returns gridCell's
      * current yPos if there is an occupied cell directly beneath
      */
@@ -290,7 +353,13 @@ public abstract class Tetronimo {
         return mGameBoard.getGridCell(xPos, yPos);
     }
 
-    void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
+    /**
+     * Change the position of a component GridCellView on the gameboard
+     * @param componentIndex index in mComponentCells of the cell to move
+     * @param newXPos        xPos to move the cell to
+     * @param newYPos        yPos to move the cell to
+     */
+    private void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
 
         mComponentCells[componentIndex].setImageResource(android.R.color.transparent);
         mComponentCells[componentIndex].setOccupied(false);
@@ -298,33 +367,6 @@ public abstract class Tetronimo {
         mComponentCells[componentIndex] = mGameBoard.getGridCell(newXPos, newYPos);
         mComponentCells[componentIndex].setImageResource(DRAWABLE_ID);
         mComponentCells[componentIndex].setOccupied(true);
-    }
-
-    /**
-     * Called by a Tetronimo subclass's implementation of rotate(). Moves cells to
-     * where they need to be once rotate() decides which cells need to go where.
-     * @param fromCoordinates x and y positions of component cells to move from
-     * @param toCoordinates x and y positions to move component cells to
-     * @param newAxisCoordinates new coordinates for axis cell: if axis is not changing, use
-     *                           current mAxisCell coordinates.
-     */
-    void rotate(int[][] fromCoordinates, int[][] toCoordinates, int[] newAxisCoordinates) {
-
-        GridCellView componentCell;
-        for(int i = 0; i < fromCoordinates.length; i++) {
-
-            for (int j = 0; j < mComponentCells.length; j++) {
-
-                componentCell = mComponentCells[j];
-                if (componentCell.getXPos() == fromCoordinates[i][0] &&
-                        componentCell.getYPos() == fromCoordinates[i][1]) {
-                    moveComponentToCell(j, toCoordinates[i][0], toCoordinates[i][1]);
-                    break;
-                }
-            }
-        }
-
-        mAxisCell = mGameBoard.getGridCell(newAxisCoordinates[0], newAxisCoordinates[1]);
     }
 
     /**
