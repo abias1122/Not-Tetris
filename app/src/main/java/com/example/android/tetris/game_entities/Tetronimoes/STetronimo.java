@@ -5,19 +5,31 @@ import android.util.Log;
 import com.example.android.tetris.R;
 import com.example.android.tetris.game_entities.Gameboard;
 
-/**
- * Represents S tetronimo:
- *     + +
- *   + +
+/*
+  ASCII Drawing Legend
+
+  A: axis cell
+  C: component cell
+  O: unoccupied cell
+  X: occupied cell
  */
 
+/**
+ * Represents S tetronimo:
+ *  O O O
+ *  O A C
+ *  C C O
+ */
 public class STetronimo extends Tetronimo {
 
+    /**
+     * Constructor
+     * @param gameboard Gameboard object currently in play
+     */
     public STetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{3, 1}, {4, 1}, {4, 0}, {5, 0}},
-                R.drawable.s_tetron_grid_cell,
-                2);
+                new int[][] {{4, 1}, {4, 0}, {3, 1}, {5, 0}},
+                R.drawable.s_tetron_grid_cell);
     }
 
     @Override

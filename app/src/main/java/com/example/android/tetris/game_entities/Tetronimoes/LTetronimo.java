@@ -17,9 +17,8 @@ public class LTetronimo extends Tetronimo {
 
     public LTetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{3, 1}, {4, 1}, {5, 1}, {5, 0}},
-                R.drawable.l_tetron_grid_cell,
-                1);
+                new int[][] {{4, 1}, {3, 1}, {5, 1}, {5, 0}},
+                R.drawable.l_tetron_grid_cell);
     }
 
     @Override

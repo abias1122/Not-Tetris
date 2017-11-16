@@ -16,9 +16,8 @@ public class ReverseLTetronimo extends Tetronimo {
 
     public ReverseLTetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{3, 1}, {4, 1}, {5, 1}, {3, 0}},
-                R.drawable.reverse_l_tetron_grid_cell,
-                1);
+                new int[][] {{4, 1}, {3, 1}, {5, 1}, {3, 0}},
+                R.drawable.reverse_l_tetron_grid_cell);
     }
 
     @Override

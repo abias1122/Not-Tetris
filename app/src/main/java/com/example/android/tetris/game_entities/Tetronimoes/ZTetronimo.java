@@ -14,9 +14,8 @@ public class ZTetronimo extends Tetronimo {
 
     public ZTetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{3, 0}, {4, 0}, {4, 1}, {5, 1}},
-                R.drawable.z_tetron_grid_cell,
-                1);
+                new int[][] {{4, 0}, {3, 0}, {4, 1}, {5, 1}},
+                R.drawable.z_tetron_grid_cell);
     }
 
     @Override

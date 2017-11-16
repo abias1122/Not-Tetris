@@ -60,9 +60,8 @@ public abstract class Tetronimo {
      * @param gameboard        the gameboard being used in the current game
      * @param initialPositions starting X and Y positions for component cells
      * @param drawableId       drawable to be used when occupying a cell
-     * @param axisCellIndex    index of the axis cell's X and Y positions in initialPositions
      */
-    public Tetronimo(Gameboard gameboard, int[][] initialPositions, int drawableId, int axisCellIndex) {
+    public Tetronimo(Gameboard gameboard, int[][] initialPositions, int drawableId) {
 
         mGameBoard = gameboard;
         mComponentCells = new GridCellView[4];
@@ -78,7 +77,7 @@ public abstract class Tetronimo {
             mComponentCells[i] = mGameBoard.getGridCell(cellXPos, cellYPos);
         }
 
-        mAxisCell = mComponentCells[axisCellIndex];
+        mAxisCell = mComponentCells[0];
         mCurrentState = RotState.ZERO_DEG;
     }
 

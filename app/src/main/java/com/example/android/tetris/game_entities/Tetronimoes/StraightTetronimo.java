@@ -14,9 +14,8 @@ public class StraightTetronimo extends Tetronimo {
 
     public StraightTetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{3, 1}, {4, 1}, {5, 1}, {6, 1}},
-                R.drawable.straight_tetron_grid_cell,
-                2);
+                new int[][] {{5, 1}, {3, 1}, {4, 1}, {6, 1}},
+                R.drawable.straight_tetron_grid_cell);
     }
 
     @Override
