@@ -290,7 +290,7 @@ public abstract class Tetronimo {
         return mGameBoard.getGridCell(xPos, yPos);
     }
 
-    protected void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
+    void moveComponentToCell(int componentIndex, int newXPos, int newYPos) {
 
         mComponentCells[componentIndex].setImageResource(android.R.color.transparent);
         mComponentCells[componentIndex].setOccupied(false);
@@ -301,9 +301,36 @@ public abstract class Tetronimo {
     }
 
     /**
+     * Called by a Tetronimo subclass's implementation of rotate(). Moves cells to
+     * where they need to be once rotate() decides which cells need to go where.
+     * @param fromCoordinates x and y positions of component cells to move from
+     * @param toCoordinates x and y positions to move component cells to
+     * @param newAxisCoordinates new coordinates for axis cell: if axis is not changing, use
+     *                           current mAxisCell coordinates.
+     */
+    void rotate(int[][] fromCoordinates, int[][] toCoordinates, int[] newAxisCoordinates) {
+
+        GridCellView componentCell;
+        for(int i = 0; i < fromCoordinates.length; i++) {
+
+            for (int j = 0; j < mComponentCells.length; j++) {
+
+                componentCell = mComponentCells[j];
+                if (componentCell.getXPos() == fromCoordinates[i][0] &&
+                        componentCell.getYPos() == fromCoordinates[i][1]) {
+                    moveComponentToCell(j, toCoordinates[i][0], toCoordinates[i][1]);
+                    break;
+                }
+            }
+        }
+
+        mAxisCell = mGameBoard.getGridCell(newAxisCoordinates[0], newAxisCoordinates[1]);
+    }
+
+    /**
      * Sort component cells from greatest to least YPos
      */
-    protected void sortComponentGridCellsByYPos() {
+    private void sortComponentGridCellsByYPos() {
 
         //greatest to least
         boolean swapped;
@@ -323,7 +350,7 @@ public abstract class Tetronimo {
     /**
      * Sort component cells from least to greatest XPos
      */
-    protected void sortComponentGridCellsByXPos() {
+    private void sortComponentGridCellsByXPos() {
 
         boolean swapped;
         do {

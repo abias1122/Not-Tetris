@@ -39,49 +39,23 @@ public class ZTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
-
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is diagonally bottom right of axis cell
-                        if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
-                            moveComponentToCell(i, axisXPos, axisYPos - 1);
-                        }
-
-                        //cell is directly below axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                            moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos + 1, axisYPos + 1}, {axisXPos, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos - 1, axisYPos + 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if(axisYPos < (NUM_ROWS - 2) &&
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 2).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos + 1}, {axisXPos - 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos + 1}, {axisXPos - 1, axisYPos + 2}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is diagonally bottom right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos + 2);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -90,23 +64,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos + 1}, {axisXPos - 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos - 1}, {axisXPos + 1, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is diagonally bottom right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -115,23 +77,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos}, {axisXPos - 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos, axisYPos + 2}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 2};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is axis cell
-                            if(mComponentCells[i].equals(mAxisCell)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 2);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -152,26 +102,13 @@ public class ZTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is diagonally bottom left of axis cell
-                        if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
-                            moveComponentToCell(i, axisXPos + 1, axisYPos);
-                        }
-
-                        //cell is directly left of axis cell
-                        if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos - 1, axisYPos + 1}, {axisXPos - 1, axisYPos}};
+                    int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
 
                 else {
@@ -179,23 +116,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 2, axisYPos - 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos - 1, axisYPos + 1}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos - 1}, {axisXPos - 2, axisYPos - 1}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
-                            }
-
-                            //cell is bottom left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos - 2, axisYPos - 1);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -204,23 +129,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos - 2, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-
-                            //cell is axis cell
-                            if(mComponentCells[i].equals(mAxisCell)) {
-                                moveComponentToCell(i, axisXPos - 2, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -229,23 +142,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos - 1, axisYPos + 1}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos + 1, axisYPos + 1}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-
-                            //cell is bottom left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -265,49 +166,25 @@ public class ZTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
+                    int[][] fromCoordinates = {{axisXPos - 1, axisYPos - 1}, {axisXPos, axisYPos - 1}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos + 1 }, {axisXPos + 1, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is diagonally top left of axis cell
-                        if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
-                            moveComponentToCell(i, axisXPos, axisYPos + 1);
-                        }
-
-                        //cell is directly above axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                            moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
-                        }
-                    }
                 }
                 else {
                     if(axisYPos > 1 &&
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos - 2).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos - 1}, {axisXPos + 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos - 1}, {axisXPos + 1, axisYPos - 2}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is top left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos - 1);
-                            }
-
-                            //cell is right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos - 2);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -316,23 +193,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos}, {axisXPos + 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 2}, {axisXPos - 1, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is axis cell
-                            if(mComponentCells[i].equals(mAxisCell)) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 2);
-                            }
-
-                            //cell is right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -341,23 +206,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos + 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos - 1}, {axisXPos + 1, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos + 1}, {axisXPos - 1, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is top left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos + 1);
-                            }
-
-                            //cell is right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -378,49 +231,24 @@ public class ZTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is diagonally top right of axis cell
-                        if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
-                            moveComponentToCell(i, axisXPos - 1, axisYPos);
-                        }
-
-                        //cell is directly right of axis cell
-                        if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos + 1, axisYPos - 1}, {axisXPos + 1, axisYPos}};
+                    int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos + 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if(axisXPos < (NUM_COLS - 2) &&
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos + 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 2, axisYPos + 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos - 1}, {axisXPos, axisYPos + 1}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos + 1}, {axisXPos + 2, axisYPos + 1}};
+                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is top right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos + 1);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 2, axisYPos + 1);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -429,23 +257,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos}, {axisXPos, axisYPos + 1}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos + 2, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is axis cell
-                            if(mComponentCells[i].equals(mAxisCell)) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 2, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -454,23 +270,11 @@ public class ZTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos - 1).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos - 1}, {axisXPos, axisYPos + 1}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos - 1, axisYPos - 1}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is  top right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos - 1);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());

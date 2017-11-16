@@ -40,31 +40,13 @@ public class StraightTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is two spaces left of axis
-                        if(componentXPos == (axisXPos - 2) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos - 2);
-                        }
-
-                        //cell is directly right of axis cell
-                        if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos + 1);
-                        }
-
-                        //cell is directly left of axis cell
-                        if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos - 1);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos - 2, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos - 2}, {axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if (axisYPos > 2 &&
@@ -72,28 +54,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 3).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}, {axisXPos, axisYPos - 3}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 2);
-                            }
-
-                            //cell is two cells left of axis cell
-                            if(componentXPos == (axisXPos - 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 3);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -104,28 +69,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 1}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 2);
-                            }
-
-                            //cell is two cells left of axis cell
-                            if(componentXPos == (axisXPos - 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -135,28 +83,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 3).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 3}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 2);
-                            }
-
-                            //cell is two cells left of axis cell
-                            if(componentXPos == (axisXPos - 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 3);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -184,31 +115,13 @@ public class StraightTetronimo extends Tetronimo {
                 Log.d(TAG, "axisXPos: " + axisXPos);
                 Log.d(TAG, "NUM_COLS - 2 = " + (NUM_COLS - 2));
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is two spaces above axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos - 2)) {
-                            moveComponentToCell(i, axisXPos + 2, axisYPos);
-                        }
-
-                        //cell is directly above axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                            moveComponentToCell(i, axisXPos + 1, axisYPos);
-                        }
-
-                        //cell is directly below axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                            moveComponentToCell(i, axisXPos - 1, axisYPos);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos, axisYPos - 2}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos + 2, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if (axisXPos < (NUM_COLS - 3) &&
@@ -216,28 +129,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 3, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 1}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}, {axisXPos + 3, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos + 2, axisYPos);
-                            }
-
-                            //cell is two cells above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 2)) {
-                                moveComponentToCell(i, axisXPos + 3, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -248,28 +144,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos - 2, axisYPos}, {axisXPos - 1, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 2, axisYPos);
-                            }
-
-                            //cell is two cells above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 2)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -279,28 +158,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 3, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}, {axisXPos - 3, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 2, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 2, axisYPos);
-                            }
-
-                            //cell is two cells above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 2)) {
-                                moveComponentToCell(i, axisXPos - 3, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 2)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -324,31 +186,13 @@ public class StraightTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is two spaces right of axis
-                        if(componentXPos == (axisXPos + 2) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos + 2);
-                        }
-
-                        //cell is directly right of axis cell
-                        if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos + 1);
-                        }
-
-                        //cell is directly left of axis cell
-                        if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                            moveComponentToCell(i, axisXPos, axisYPos - 1);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos + 2, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}};
+                    int[][] toCoordinates   = {{axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if (axisYPos < (NUM_ROWS - 3) &&
@@ -356,28 +200,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 2).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos + 3).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}, {axisXPos, axisYPos + 3}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos + 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 2);
-                            }
-
-                            //cell is two cells right of axis cell
-                            if(componentXPos == (axisXPos + 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 3);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos + 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -388,28 +215,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 1).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos + 1}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos - 1};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos + 1);
-                            }
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is two cells right of axis cell
-                            if(componentXPos == (axisXPos + 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 2);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 1) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -419,28 +229,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 2).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos, axisYPos - 3).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
+                        int[][] toCoordinates   = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos - 2}, {axisXPos, axisYPos - 3}};
+                        int[] newAxisCoordinates = {axisXPos, axisYPos - 2};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly left of axis cell
-                            if(componentXPos == (axisXPos - 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 1);
-                            }
-
-                            //cell is directly right of axis cell
-                            if(componentXPos == (axisXPos + 1) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 2);
-                            }
-
-                            //cell is two cells right of axis cell
-                            if(componentXPos == (axisXPos + 2) && componentYPos == axisYPos) {
-                                moveComponentToCell(i, axisXPos, axisYPos - 3);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[((axisYPos - 2) * NUM_COLS) + axisXPos];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -464,31 +257,13 @@ public class StraightTetronimo extends Tetronimo {
                     useNormalRotate = false;
                 }
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
 
-                    for(int i = 0; i < mComponentCells.length; i++) {
-
-                        componentXPos = mComponentCells[i].getXPos();
-                        componentYPos = mComponentCells[i].getYPos();
-
-                        //cell is two spaces below axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos + 2)) {
-                            moveComponentToCell(i, axisXPos - 2, axisYPos);
-                        }
-
-                        //cell is directly above axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                            moveComponentToCell(i, axisXPos + 1, axisYPos);
-                        }
-
-                        //cell is directly below axis cell
-                        if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                            moveComponentToCell(i, axisXPos - 1, axisYPos);
-                        }
-                    }
+                    int[][] fromCoordinates = {{axisXPos, axisYPos + 2}, {axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}};
+                    int[][] toCoordinates   = {{axisXPos - 2, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos - 1, axisYPos}};
+                    int[] newAxisCoordinates = {axisXPos, axisYPos};
+                    rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
                 }
                 else {
                     if (axisXPos > 2 &&
@@ -496,28 +271,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos - 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos - 3, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos - 2, axisYPos}, {axisXPos - 3, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos - 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos - 2, axisYPos);
-                            }
-
-                            //cell is two cells below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 2)) {
-                                moveComponentToCell(i, axisXPos - 3, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos - 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -528,28 +286,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 1, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}};
+                        int[][] toCoordinates   = {{axisXPos - 1, axisYPos}, {axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos + 1, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos - 1, axisYPos);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-
-                            //cell is two cells below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 2)) {
-                                moveComponentToCell(i, axisXPos + 2, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 1)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());
@@ -559,28 +300,11 @@ public class StraightTetronimo extends Tetronimo {
                             !mGameBoard.getGridCell(axisXPos + 2, axisYPos).getOccupied() &&
                             !mGameBoard.getGridCell(axisXPos + 3, axisYPos).getOccupied()) {
 
-                        for(int i = 0; i < mComponentCells.length; i++) {
+                        int[][] fromCoordinates = {{axisXPos, axisYPos - 1}, {axisXPos, axisYPos + 1}, {axisXPos, axisYPos + 2}};
+                        int[][] toCoordinates   = {{axisXPos + 1, axisYPos}, {axisXPos + 2, axisYPos}, {axisXPos + 3, axisYPos}};
+                        int[] newAxisCoordinates = {axisXPos + 2, axisYPos};
+                        rotate(fromCoordinates, toCoordinates, newAxisCoordinates);
 
-                            componentXPos = mComponentCells[i].getXPos();
-                            componentYPos = mComponentCells[i].getYPos();
-
-                            //cell is directly above axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos - 1)) {
-                                moveComponentToCell(i, axisXPos + 1, axisYPos);
-                            }
-
-                            //cell is directly below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 1)) {
-                                moveComponentToCell(i, axisXPos + 2, axisYPos);
-                            }
-
-                            //cell is two cells below axis cell
-                            if(componentXPos == axisXPos && componentYPos == (axisYPos + 2)) {
-                                moveComponentToCell(i, axisXPos + 3, axisYPos);
-                            }
-                        }
-
-                        mAxisCell = mGameGridCells[(axisYPos * NUM_COLS) + (axisXPos + 2)];
                         Log.i(TAG, "AXIS CHANGED");
                         Log.i(TAG, "axisXPos: " + mAxisCell.getXPos());
                         Log.i(TAG, "axisYPos: " + mAxisCell.getYPos());

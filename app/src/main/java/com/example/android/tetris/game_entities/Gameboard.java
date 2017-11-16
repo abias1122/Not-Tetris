@@ -21,6 +21,7 @@ public class Gameboard {
      */
     public Gameboard(Context context, GridLayout gameGridLayout) {
 
+        mGridCellsViews = new GridCellView[NUM_ROWS * NUM_COLS];
         for(int y = 0; y < NUM_ROWS; y++) {
             for(int x = 0; x < NUM_COLS; x++) {
                 GridCellView newGridCell = new GridCellView(context, x, y);
