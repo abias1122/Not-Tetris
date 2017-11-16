@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.android.tetris.R;
 import com.example.android.tetris.game_entities.Gameboard;
-import com.example.android.tetris.game_entities.GridCellView;
 
 /**
  * Represents T-tetronimo:
@@ -26,7 +25,7 @@ public class TTetronimo extends Tetronimo {
     @Override
     public void rotate() {
 
-        boolean useNormalRotate = true;
+        boolean useNormalRotate;
         int axisXPos = mAxisCell.getXPos();
         int axisYPos = mAxisCell.getYPos();
         Log.i(TAG, "=========IN ROTATE=========");
@@ -116,8 +115,6 @@ public class TTetronimo extends Tetronimo {
                 useNormalRotate = axisXPos > 0 &&
                         !mGameBoard.getGridCell(axisXPos - 1, axisYPos).getOccupied();
 
-                int componentXPos;
-                int componentYPos;
                 Log.i(TAG, "useNormalRotate = " + useNormalRotate);
                 if(useNormalRotate) {
                     int[][] fromCoordinates = {{axisXPos, axisYPos - 1}};
