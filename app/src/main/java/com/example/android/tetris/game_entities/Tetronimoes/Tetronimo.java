@@ -68,17 +68,41 @@ public abstract class Tetronimo {
         DRAWABLE_ID = drawableId;
 
         //Set component cells
-        for(int i = 0; i < initialPositions.length; i++) {
+        setComponentCells(initialPositions);
 
-            int[] xAndYPositions = initialPositions[i];
+        mAxisCell = mComponentCells[0];
+        mCurrentState = RotState.ZERO_DEG;
+    }
+
+    public GridCellView[] getComponentCells() {
+        return mComponentCells;
+    }
+
+    public void setComponentCells(int[][] newCoords) {
+        for(int i = 0; i < newCoords.length; i++) {
+
+            int[] xAndYPositions = newCoords[i];
             int cellXPos = xAndYPositions[0];
             int cellYPos = xAndYPositions[1];
 
             mComponentCells[i] = mGameBoard.getGridCell(cellXPos, cellYPos);
         }
+    }
 
-        mAxisCell = mComponentCells[0];
-        mCurrentState = RotState.ZERO_DEG;
+    public GridCellView getAxisCell() {
+        return mAxisCell;
+    }
+
+    public void setAxisCell(int[] position) {
+        mAxisCell = mGameBoard.getGridCell(position[0], position[1]);
+    }
+
+    public RotState getCurrentState() {
+        return mCurrentState;
+    }
+
+    public void setCurrentState(RotState newState) {
+        mCurrentState = newState;
     }
 
     /**
