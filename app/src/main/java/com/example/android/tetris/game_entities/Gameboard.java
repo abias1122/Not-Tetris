@@ -32,6 +32,21 @@ public class Gameboard {
     }
 
     /**
+     * Default Constructor for Gameboard.
+     * Has no way of working with activities: use for testing only
+     */
+    public Gameboard() {
+
+        mGridCellsViews = new GridCellView[NUM_ROWS * NUM_COLS];
+        for(int y = 0; y < NUM_ROWS; y++) {
+            for(int x = 0; x < NUM_COLS; x++) {
+                GridCellView newGridCell = new GridCellView(null, x, y);
+                mGridCellsViews[(y * NUM_COLS) + x] = newGridCell;
+            }
+        }
+    }
+
+    /**
      * Return the GridCellView at with the specified xPos
      * and YPos.
      * @param x x position starting at left of board. Can be 0 through NUM_COLS-1
