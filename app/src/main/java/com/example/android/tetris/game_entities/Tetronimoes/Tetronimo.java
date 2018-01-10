@@ -45,7 +45,7 @@ public abstract class Tetronimo {
     /**
      * Rotation state
      */
-    enum RotState {
+    public enum RotState {
         ZERO_DEG, NINETY_DEG,
         ONE_EIGHTY_DEG, TWO_SEVENTY_DEG;
     }
