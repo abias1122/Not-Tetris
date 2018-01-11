@@ -18,7 +18,7 @@ public class STetronimo extends Tetronimo {
      */
     public STetronimo(Gameboard gameboard) {
         super(gameboard,
-                new int[][] {{4, 1}, {4, 0}, {3, 1}, {5, 0}},
+                new int[][] {{4, 0}, {4, 1}, {3, 1}, {5, 0}},
                 R.drawable.s_tetron_grid_cell);
     }
 

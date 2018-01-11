@@ -11,7 +11,6 @@ import com.example.android.tetris.game_entities.GridCellView;
  * Different subclasses of Tetronimo store GridCellViews in different configurations
  * and have different ways of moving component cells relative to eachother.
  */
-//TODO: Make unit tests to properly test rotation
 public abstract class Tetronimo {
 
     /**
